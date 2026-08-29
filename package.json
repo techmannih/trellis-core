@@ -1,0 +1,32 @@
+{
+  "name": "@tsci/trellis-core",
+  "version": "0.2.0",
+  "private": true,
+  "description": "A derived tscircuit layout of the Protolux Trellis Core board",
+  "main": "index.circuit.tsx",
+  "keywords": [
+    "tscircuit",
+    "circuit",
+    "pcb",
+    "electronics",
+    "trellis-core"
+  ],
+  "scripts": {
+    "dev": "tsci dev",
+    "start": "tsci dev",
+    "typecheck": "tsc --noEmit",
+    "verify": "bun run typecheck && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bunx tsci check shorts index.circuit.tsx && bunx tsci build index.circuit.tsx",
+    "check": "bun run verify",
+    "build": "tsci build index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
+    "build:preview": "tsci build --pcb-png --schematic-png --3d-png index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
+    "build:handoff": "tsci build --kicad-project-zip --step --glbs index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
+    "snapshot": "tsci snapshot index.circuit.tsx --disable-parts-engine",
+    "snapshot:update": "tsci snapshot index.circuit.tsx --update --disable-parts-engine",
+    "snapshot:3d": "tsci snapshot index.circuit.tsx --3d --camera-preset top-left-corner --disable-parts-engine",
+    "snapshot:3d:update": "tsci snapshot index.circuit.tsx --update --3d --camera-preset top-left-corner --disable-parts-engine"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "tscircuit": "0.0.2442",
+    "typescript": "^5.9.2"
+  }}
