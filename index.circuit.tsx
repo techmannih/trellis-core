@@ -32,7 +32,6 @@ export const TrellisCore = () => (
     minViaHoleDiameter="0.2mm"
     minViaPadDiameter="0.4mm"
     autorouterEffortLevel="5x"
-    routingDisabled
     schAutoLayoutEnabled
     schTraceAutoLabelEnabled
     schMaxTraceDistance="0.8mm"
