@@ -1,10 +1,7 @@
 # Trellis Core
 
-A compact, four-layer Linux board designed with [tscircuit](https://tscircuit.com/) around the Allwinner T113-S3 application processor.
+A compact, four-layer Linux board built around the Allwinner T113-S3 application processor.
 
-![Trellis Core 3D render](./__snapshots__/index.circuit-3d.snap.png)
-
-[PCB layout](./__snapshots__/index.circuit-pcb.snap.svg) · [Schematic](./__snapshots__/index.circuit-schematic.snap.svg) · [3D view](./__snapshots__/index.circuit-3d.snap.png)
 
 ## Overview
 
