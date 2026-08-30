@@ -60,7 +60,7 @@ export const HX_TYPE_C_16P_L8_35 = (props: ChipProps<typeof pinLabels>) => {
         objUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C41427493.obj?uuid=9544114ef5bb4dfbb31a31544500c2c1",
         stepUrl: "https://modelcdn.tscircuit.com/easyeda_models/assets/C41427493.step?uuid=9544114ef5bb4dfbb31a31544500c2c1",
         pcbRotationOffset: 0,
-        modelOriginPosition: { x: 0.00008889999992334197, y: 6.437524650000114, z: -1.7299890000000002 },
+        modelOriginPosition: { x: 0.00008889999992334197, y: 6.037524650000114, z: -1.7299890000000002 },
       }}
       {...props}
     />
