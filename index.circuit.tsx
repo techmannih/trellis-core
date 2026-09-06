@@ -4,12 +4,16 @@ import { HX_TYPE_C_16P_L8_35 } from "./imports/HX_TYPE_C_16P_L8_35"
 import { JK_nSMD100_16 } from "./imports/JK_nSMD100_16"
 import { NCD0805R1 } from "./imports/NCD0805R1"
 import { Q13FC13500004 } from "./imports/Q13FC13500004"
+import { SN74AHCT1G125DCKR } from "./imports/SN74AHCT1G125DCKR"
 import { SN74AHC1G08DCKR } from "./imports/SN74AHC1G08DCKR"
+import { SM04B_SRSS_TB_LF__SN_ } from "./imports/SM04B_SRSS_TB_LF__SN_/SM04B_SRSS_TB_LF__SN_"
+import { SM06B_SRSS_TB_LF__SN_ } from "./imports/SM06B_SRSS_TB_LF__SN_/SM06B_SRSS_TB_LF__SN_"
 import { T113_S3 } from "./imports/T113_S3/T113_S3"
 import { TLV62569PDDCR } from "./imports/TLV62569PDDCR"
 import { TSA010A2026B } from "./imports/TSA010A2026B"
 import { USBLC6_2SC6 } from "./imports/USBLC6_2SC6"
 import { XRIM252012S2R2MBCA } from "./imports/XRIM252012S2R2MBCA"
+import { XL_2121RGBC_2812B } from "./imports/XL_2121RGBC_2812B/XL_2121RGBC_2812B"
 import { ZDSD04GLGEAG } from "./imports/ZDSD04GLGEAG"
 
 /**
@@ -31,6 +35,7 @@ export const TrellisCore = () => (
     defaultTraceWidth="0.2mm"
     minViaHoleDiameter="0.2mm"
     minViaPadDiameter="0.4mm"
+    pcbStyle={{ viaPadDiameter: "0.4mm", viaHoleDiameter: "0.2mm" }}
     autorouterEffortLevel="5x"
     schAutoLayoutEnabled
     schTraceAutoLabelEnabled
@@ -38,9 +43,28 @@ export const TrellisCore = () => (
   >
     <schematicsheet name="power" displayName="Power" sheetIndex={1} />
     <schematicsheet name="cpu-core" displayName="CPU Core" sheetIndex={2} />
-    <schematicsheet name="cpu-io" displayName="CPU I/O" sheetIndex={3} />
+    <schematicsheet name="cpu-io" displayName="Expansion, Boot and Status" sheetIndex={3} />
     <schematicsheet name="storage" displayName="Storage" sheetIndex={4} />
     <schematicsheet name="usb" displayName="USB-C" sheetIndex={5} />
+
+    <net name="VBUS" isPowerNet />
+    <net name="P3V3" isPowerNet />
+    <net name="P1V8" isPowerNet />
+    <net name="P1V5" isPowerNet />
+    <net name="P0V9" isPowerNet />
+    <net name="GND" isGroundNet />
+    <net name="USB_VBUS_RAW" isPowerNet />
+    {/* These names contain voltage text but represent signals, not supply rails. */}
+    <net name="BUCK_3V3_EN" isPowerNet={false} />
+    <net name="BUCK_3V3_SW" isPowerNet={false} />
+    <net name="BUCK_3V3_FB" isPowerNet={false} />
+    <net name="BUCK_0V9_SW" isPowerNet={false} />
+    <net name="BUCK_0V9_FB" isPowerNet={false} />
+    <net name="P3V3_PG" isPowerNet={false} />
+    <net name="AUDIO_VRA1" isPowerNet={false} />
+    <net name="AUDIO_VRA2" isPowerNet={false} />
+    <net name="ADDR_LED_DATA_5V" isPowerNet={false} />
+
 
     <schematicsection name="power-3v3" displayName="3.3 V Buck Regulator" />
     <schematicsection name="power-0v9" displayName="0.9 V Core Buck Regulator" />
@@ -50,11 +74,383 @@ export const TrellisCore = () => (
     <schematicsection name="cpu-reset" displayName="CPU Reset" />
     <schematicsection name="cpu-boot" displayName="Boot Selection" />
     <schematicsection name="cpu-board-id" displayName="Board Identification" />
-    <schematicsection name="storage-emmc" displayName="Managed Flash and Pull-ups" />
+    <schematicsection name="cpu-expansion" displayName="SPI Display and Debug UART" />
+    <schematicsection name="cpu-status" displayName="Addressable RGB Status LED" />
+    <schematicsection name="storage-flash" displayName="SD NAND Flash and Pull-ups" />
     <schematicsection name="storage-clock-gate" displayName="Storage Clock Gate" />
-    <schematicsection name="storage-reset" displayName="Storage Reset" />
+    <schematicsection name="storage-reset" displayName="FEL Recovery" />
     <schematicsection name="usb-port" displayName="USB-C Receptacle and CC" />
     <schematicsection name="usb-protection" displayName="USB Power and Data Protection" />
+
+    {/* Short, dedicated bypass routes. Limits include the 1.6 mm through-via.
+        Via waypoints use U3 footprint coordinates (U3 is rotated 90° on the PCB). */}
+    <trace
+      name="DECOUPLE_C7"
+      from=".U2 > .VIN"
+      to=".C7 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C1"
+      from=".U1 > .VIN"
+      to=".C1 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C28"
+      from=".U3 > .LDOB_OUT"
+      to=".C28 > .pin1"
+      maxLength="3mm"
+      pcbPath={[{ x: 5.400040, y: -8.729906 }]}
+    />
+    <trace
+      name="DECOUPLE_C20"
+      from=".U3 > .VCC_LVDS"
+      to=".C20 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C23"
+      from=".U3 > .VDD_SYS0"
+      to=".C23 > .pin1"
+      maxLength="3mm"
+      pcbPath={[{ x: 8.679906, y: -0.999998 }]}
+    />
+    <trace
+      name="DECOUPLE_C27"
+      from=".U3 > .VDD_CORE1"
+      to=".C27 > .pin1"
+      maxLength="4mm"
+      pcbPath={[
+        { x: -8.579906, y: -1.800098 },
+        { x: -8.729906, y: -2.050098 },
+        { x: -8.729906, y: -2.050098, via: true, fromLayer: "top", toLayer: "bottom" },
+        { x: -8.729906, y: -2.050098 },
+      ]}
+    />
+    <trace
+      name="DECOUPLE_C14"
+      from=".U3 > .VCC_PD"
+      to=".C14 > .pin1"
+      maxLength="4mm"
+      pcbPath={[
+        { x: 5.800090, y: 8.579906 },
+        { x: 5.550090, y: 8.729906 },
+        { x: 5.550090, y: 8.729906, via: true, fromLayer: "top", toLayer: "bottom" },
+        { x: 5.550090, y: 8.729906 },
+      ]}
+    />
+    <trace
+      name="DECOUPLE_C34"
+      from=".U3 > .HPVCC"
+      to=".C34 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C17"
+      from=".U3 > .VCC_RTC"
+      to=".C17 > .pin1"
+      maxLength="3mm"
+      pcbPath={[{ x: 3.800094, y: -8.729906 }]}
+    />
+    <trace
+      name="DECOUPLE_C31"
+      from=".U3 > .VCC_DRAM0"
+      to=".C31 > .pin1"
+      maxLength="3mm"
+      pcbPath={[{ x: 8.679906, y: -0.199898 }]}
+    />
+    <trace
+      name="DECOUPLE_C30"
+      from=".U3 > .VCC_DRAM1"
+      to=".C30 > .pin1"
+      maxLength="4mm"
+      pcbPath={[
+        { x: 8.579906, y: 0.199898 },
+        { x: 8.680000, y: 0.079993 },
+        { x: 8.680000, y: 0.079993, via: true, fromLayer: "top", toLayer: "bottom" },
+        { x: 8.680000, y: 0.079993 },
+      ]}
+    />
+    <trace
+      name="DECOUPLE_C25"
+      from=".U3 > .VDD_SYS2"
+      to=".C25 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C11"
+      from=".U3 > .VCC_IO"
+      to=".C11 > .pin1"
+      maxLength="4mm"
+      pcbPath={[
+        { x: -0.999998, y: 8.579906 },
+        { x: -0.999998, y: 8.729906 },
+        { x: -0.999998, y: 8.729906, via: true, fromLayer: "top", toLayer: "bottom" },
+        { x: -0.999998, y: 8.729906 },
+      ]}
+    />
+    <trace
+      name="DECOUPLE_C24"
+      from=".U3 > .VDD_SYS1"
+      to=".C24 > .pin1"
+      maxLength="4mm"
+      pcbPath={[
+        { x: 8.579906, y: 0.999998 },
+        { x: 8.680000, y: 1.349993 },
+        { x: 8.680000, y: 1.349993, via: true, fromLayer: "top", toLayer: "bottom" },
+        { x: 8.680000, y: 1.349993 },
+      ]}
+    />
+    <trace
+      name="DECOUPLE_C15"
+      from=".U3 > .VCC_TVOUT"
+      to=".C15 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C19"
+      from=".U3 > .VCC_TVIN"
+      to=".C19 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C38"
+      from=".U3 > .VRA2"
+      to=".C38 > .pin1"
+      maxLength="4mm"
+      pcbPath={[
+        { x: -3.800094, y: 8.579906 },
+        { x: -4.000000, y: 8.679993 },
+        { x: -4.000000, y: 8.679993, via: true, fromLayer: "top", toLayer: "bottom" },
+        { x: -4.000000, y: 8.679993 },
+      ]}
+    />
+    <trace
+      name="DECOUPLE_C35"
+      from=".U3 > .AVCC"
+      to=".C35 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C39"
+      from=".U3 > .VRA1"
+      to=".C39 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C9"
+      from=".U3 > .LDO_IN"
+      to=".C9 > .pin1"
+      maxLength="3mm"
+      pcbPath={[{ x: 4.999990, y: -8.729906 }]}
+    />
+    <trace
+      name="DECOUPLE_C13"
+      from=".U3 > .VCC_PG"
+      to=".C13 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C16"
+      from=".U3 > .LDOA_OUT"
+      to=".C16 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C18"
+      from=".U3 > .VCC_PLL"
+      to=".C18 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C21"
+      from=".U3 > .VDD18_DRAM"
+      to=".C21 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C26"
+      from=".U3 > .VDD_CORE0"
+      to=".C26 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C12"
+      from=".U3 > .VCC_PE"
+      to=".C12 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C45"
+      from=".U7 > .VDD"
+      to=".C45 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C41"
+      from=".U5 > .VDD"
+      to=".C41 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C42"
+      from=".U5 > .VDD"
+      to=".C42 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+    <trace
+      name="DECOUPLE_C43"
+      from=".U6 > .VCC"
+      to=".C43 > .pin1"
+      maxLength="3mm"
+      pcbStraightLine
+    />
+
+    {/* Local bypass returns connect to the inner ground plane through these vias. */}
+    <via name="GND_C1" pcbX={-13.700000} pcbY={-8.375000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C1" from=".C1 > .pin2" to=".GND_C1 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C7" pcbX={8.300000} pcbY={-8.375000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C7" from=".C7 > .pin2" to=".GND_C7 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C9" pcbX={5.910000} pcbY={12.900000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C9" from=".C9 > .pin2" to=".GND_C9 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C11" pcbX={-16.539913} pcbY={6.400002}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C11" from=".C11 > .pin2" to=".GND_C11 > .bottom"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C12" pcbX={0.500000} pcbY={18.210000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C12" from=".C12 > .pin2" to=".GND_C12 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C13" pcbX={0.900000} pcbY={-3.410000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C13" from=".C13 > .pin2" to=".GND_C13 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C14" pcbX={-16.539913} pcbY={13.200090}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C14" from=".C14 > .pin2" to=".GND_C14 > .bottom"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C15" pcbX={-16.110000} pcbY={8.800000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C15" from=".C15 > .pin2" to=".GND_C15 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C16" pcbX={5.910000} pcbY={11.800000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C16" from=".C16 > .pin2" to=".GND_C16 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C17" pcbX={5.910000} pcbY={10.700000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C17" from=".C17 > .pin2" to=".GND_C17 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C18" pcbX={5.910000} pcbY={8.800000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C18" from=".C18 > .pin2" to=".GND_C18 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C19" pcbX={-7.500000} pcbY={-3.410000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C19" from=".C19 > .pin2" to=".GND_C19 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C20" pcbX={-16.110000} pcbY={13.600000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C20" from=".C20 > .pin2" to=".GND_C20 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C21" pcbX={-6.000000} pcbY={18.210000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C21" from=".C21 > .pin2" to=".GND_C21 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C23" pcbX={-3.400000} pcbY={18.210000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C23" from=".C23 > .pin2" to=".GND_C23 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C24" pcbX={-6.500000} pcbY={18.640000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C24" from=".C24 > .pin2" to=".GND_C24 > .bottom"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C25" pcbX={-16.110000} pcbY={7.200000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C25" from=".C25 > .pin2" to=".GND_C25 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C26" pcbX={-3.900000} pcbY={-3.410000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C26" from=".C26 > .pin2" to=".GND_C26 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C27" pcbX={-3.499909} pcbY={-3.839906}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C27" from=".C27 > .pin2" to=".GND_C27 > .bottom"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C28" pcbX={5.910000} pcbY={14.100000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C28" from=".C28 > .pin2" to=".GND_C28 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C30" pcbX={-5.499905} pcbY={18.639906}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C30" from=".C30 > .pin2" to=".GND_C30 > .bottom"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C31" pcbX={-4.700000} pcbY={18.210000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C31" from=".C31 > .pin2" to=".GND_C31 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C34" pcbX={-11.700000} pcbY={-3.510000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C34" from=".C34 > .pin2" to=".GND_C34 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C35" pcbX={-16.110000} pcbY={4.000000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C35" from=".C35 > .pin2" to=".GND_C35 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C38" pcbX={-16.539913} pcbY={3.599906}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C38" from=".C38 > .pin2" to=".GND_C38 > .bottom"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C39" pcbX={-16.110000} pcbY={2.800000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C39" from=".C39 > .pin2" to=".GND_C39 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C41" pcbX={12.950000} pcbY={13.325000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C41" from=".C41 > .pin2" to=".GND_C41 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C42" pcbX={15.395000} pcbY={14.410000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C42" from=".C42 > .pin2" to=".GND_C42 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C43" pcbX={9.090000} pcbY={16.900000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C43" from=".C43 > .pin2" to=".GND_C43 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C45" pcbX={12.010000} pcbY={2.500000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C45" from=".C45 > .pin2" to=".GND_C45 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C46" pcbX={4.650000} pcbY={2.510000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C46" from=".C46 > .pin2" to=".GND_C46 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <copperpour name="GND_PLANE" layer="inner1" connectsTo="net.GND" clearance="0.2mm" boardEdgeMargin="0.3mm" />
 
     <hole name="H1" diameter="2.7mm" pcbX={-22} pcbY={22} />
     <hole name="H2" diameter="2.7mm" pcbX={-22} pcbY={-22} />
@@ -72,12 +468,12 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.Net_U1_EN",
+        pin1: "net.BUCK_3V3_EN",
         pin2: "net.GND",
-        pin3: "net.Net_U1_SW",
+        pin3: "net.BUCK_3V3_SW",
         pin4: "net.VBUS",
         pin5: "net.P3V3_PG",
-        pin6: "net.Net_U1_FB",
+        pin6: "net.BUCK_3V3_FB",
       }}
     />
     <TLV62569PDDCR
@@ -93,9 +489,9 @@ export const TrellisCore = () => (
       connections={{
         pin1: "net.P3V3_PG",
         pin2: "net.GND",
-        pin3: "net.Net_U2_SW",
+        pin3: "net.BUCK_0V9_SW",
         pin4: "net.VBUS",
-        pin6: "net.Net_U2_FB",
+        pin6: "net.BUCK_0V9_FB",
       }}
       noConnect={["pin5"]}
     />
@@ -110,7 +506,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.Net_U1_SW",
+        pin1: "net.BUCK_3V3_SW",
         pin2: "net.P3V3",
       }}
     />
@@ -125,7 +521,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-0v9"
       connections={{
-        pin1: "net.Net_U2_SW",
+        pin1: "net.BUCK_0V9_SW",
         pin2: "net.P0V9",
       }}
     />
@@ -141,7 +537,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.Net_D1_K",
+        pin1: "net.POWER_LED_K",
         pin2: "net.P3V3",
       }}
     />
@@ -155,15 +551,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL10A106MA8NRNC"
       supplierPartNumbers={{ jlcpcb: ["C96446"] }}
-      pcbX={11.199993}
-      pcbY={-16.9}
-      pcbRotation={0}
+      pcbX={8.3}
+      pcbY={-9.9}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="power-0v9"
-      connections={{
-        pin1: "net.VBUS",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U2 > .VIN"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C2"
@@ -182,7 +576,7 @@ export const TrellisCore = () => (
       schSectionName="power-3v3"
       connections={{
         pin1: "net.P3V3",
-        pin2: "net.Net_U1_FB",
+        pin2: "net.BUCK_3V3_FB",
       }}
     />
     <capacitor
@@ -242,7 +636,7 @@ export const TrellisCore = () => (
       schSectionName="power-0v9"
       connections={{
         pin1: "net.P0V9",
-        pin2: "net.Net_U2_FB",
+        pin2: "net.BUCK_0V9_FB",
       }}
     />
     <capacitor
@@ -295,20 +689,18 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL10A106MA8NRNC"
       supplierPartNumbers={{ jlcpcb: ["C96446"] }}
-      pcbX={-11.003427}
-      pcbY={-16.900041}
-      pcbRotation={0}
+      pcbX={-13.7}
+      pcbY={-9.9}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="power-3v3"
-      connections={{
-        pin1: "net.VBUS",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U1 > .VIN"
+      maxDecouplingTraceLength="3mm"
     />
     <resistor
         name="R1"
         schX={-10.54}
-        schY={4}
+        schY={5}
         schSheetName="power"
       resistance="100kohm"
       footprint="res0402"
@@ -321,7 +713,7 @@ export const TrellisCore = () => (
       schSectionName="power-3v3"
       connections={{
         pin1: "net.VBUS",
-        pin2: "net.Net_U1_EN",
+        pin2: "net.BUCK_3V3_EN",
       }}
     />
     <resistor
@@ -340,7 +732,7 @@ export const TrellisCore = () => (
       schSectionName="power-0v9"
       connections={{
         pin1: "net.P0V9",
-        pin2: "net.Net_U2_FB",
+        pin2: "net.BUCK_0V9_FB",
       }}
     />
     <resistor
@@ -359,13 +751,13 @@ export const TrellisCore = () => (
       schSectionName="power-3v3"
       connections={{
         pin1: "net.P3V3",
-        pin2: "net.Net_U1_FB",
+        pin2: "net.BUCK_3V3_FB",
       }}
     />
     <resistor
         name="R4"
         schX={5.5}
-        schY={3.2}
+        schY={-1.58}
         schSheetName="power"
       resistance="5.1kohm"
       footprint="res0402"
@@ -377,7 +769,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.Net_D1_K",
+        pin1: "net.POWER_LED_K",
         pin2: "net.GND",
       }}
     />
@@ -415,7 +807,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.Net_U1_FB",
+        pin1: "net.BUCK_3V3_FB",
         pin2: "net.GND",
       }}
     />
@@ -434,7 +826,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-0v9"
       connections={{
-        pin1: "net.Net_U2_FB",
+        pin1: "net.BUCK_0V9_FB",
         pin2: "net.GND",
       }}
     />
@@ -470,9 +862,12 @@ export const TrellisCore = () => (
         pin28: "net.P1V8",
         pin29: "net.P3V3",
         pin30: "net.P1V5",
+        pin33: "net.UART0_RX",
         pin34: "net.P3V3",
+        pin35: "net.UART0_TX",
+        pin42: "net.ADDR_LED_CTRL",
         pin46: "net.P0V9",
-        pin47: "net.Net_U3B_DZQ",
+        pin47: "net.DDR_DZQ",
         pin48: "net.P1V5",
         pin49: "net.P1V5",
         pin50: "net.P1V8",
@@ -481,17 +876,21 @@ export const TrellisCore = () => (
         pin53: "net.BOARD_ID_2",
         pin65: "net.P1V8",
         pin66: "net.P3V3",
+        pin67: "net.SPI1_CS0",
+        pin68: "net.SPI1_CLK",
+        pin69: "net.SPI1_MISO",
+        pin70: "net.SPI1_MOSI",
         pin77: "net.P3V3",
         pin81: "net.P0V9",
         pin83: "net.P3V3",
         pin89: "net.P1V8",
-        pin90: "net.Net_U3F_VRA2",
+        pin90: "net.AUDIO_VRA2",
         pin91: "net.GND",
-        pin92: "net.Net_U3F_VRA1",
+        pin92: "net.AUDIO_VRA1",
         pin93: "net.GND",
         pin94: "net.GND",
         pin97: "net.P1V8",
-        pin101: "net.Net_U3F_GPADC0",
+        pin101: "net.BOARD_ID_ADC",
         pin107: "net.P1V8",
         pin114: "net.USB0_DN",
         pin115: "net.USB0_DP",
@@ -514,15 +913,12 @@ export const TrellisCore = () => (
         "pin21",
         "pin31",
         "pin32",
-        "pin33",
-        "pin35",
         "pin36",
         "pin37",
         "pin38",
         "pin39",
         "pin40",
         "pin41",
-        "pin42",
         "pin43",
         "pin44",
         "pin45",
@@ -537,10 +933,6 @@ export const TrellisCore = () => (
         "pin62",
         "pin63",
         "pin64",
-        "pin67",
-        "pin68",
-        "pin69",
-        "pin70",
         "pin71",
         "pin72",
         "pin73",
@@ -585,24 +977,18 @@ export const TrellisCore = () => (
       ]}
     />
     <CM4024M00008001
-        name="Y1"
+        name="OSC1"
         schX={-9}
-        schY={2.32}
+        schY={3}
         schSheetName="cpu-core"
       pcbX={8.697617}
       pcbY={8.60129}
       pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-clocks"
-      connections={{
-        pin1: "net.DXIN",
-        GND1: "net.GND",
-        pin3: "net.DXOUT",
-        GND2: "net.GND",
-      }}
     />
     <Q13FC13500004
-        name="Y2"
+        name="OSC2"
         schX={-9}
         schY={0}
         schSheetName="cpu-core"
@@ -611,15 +997,18 @@ export const TrellisCore = () => (
       pcbRotation={180}
       schRotation={0}
       schSectionName="cpu-clocks"
-      connections={{
-        pin1: "net.LXIN",
-        pin2: "net.LXOUT",
-      }}
     />
+    <trace name="XTAL24_DXIN" from=".OSC1 > .pin1" to="net.DXIN" schDisplayLabel="DXIN" />
+    <trace name="XTAL24_GND1" from=".OSC1 > .GND1" to="net.GND" schDisplayLabel="GND" />
+    <trace name="XTAL24_DXOUT" from=".OSC1 > .pin3" to="net.DXOUT" schDisplayLabel="DXOUT" />
+    <trace name="XTAL24_GND2" from=".OSC1 > .GND2" to="net.GND" schDisplayLabel="GND" />
+    <trace name="XTAL32_LXIN" from=".OSC2 > .pin1" to="net.LXIN" schDisplayLabel="LXIN" />
+    <trace name="XTAL32_LXOUT" from=".OSC2 > .pin2" to="net.LXOUT" schDisplayLabel="LXOUT" />
     <TSA010A2026B
         name="SW1"
+        displayName="RESET"
         schX={11}
-        schY={-4}
+        schY={-4.53}
         schSheetName="cpu-core"
       pcbX={8.999993}
       pcbY={20.8}
@@ -633,7 +1022,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C33"
-        schX={-7}
+        schX={-5.5}
         schY={3}
         schSheetName="cpu-core"
       capacitance="10pF"
@@ -661,15 +1050,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05A225MQ5NSNC"
       supplierPartNumbers={{ jlcpcb: ["C12530"] }}
-      pcbX={6.099993}
-      pcbY={14.9}
+      pcbX={4.7}
+      pcbY={14.1}
       pcbRotation={0}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V5",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .LDOB_OUT"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C10"
@@ -701,15 +1088,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.700007}
-      pcbY={14.4}
+      pcbX={-14.9}
+      pcbY={13.6}
       pcbRotation={180}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_LVDS"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C40"
@@ -741,15 +1126,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-0.6000070000000002}
-      pcbY={17.5}
-      pcbRotation={270}
+      pcbX={-3.4}
+      pcbY={17}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P0V9",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VDD_SYS0"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C27"
@@ -761,15 +1144,14 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-3.900007}
-      pcbY={-4}
+      pcbX={-3.4999090000000006}
+      pcbY={-2.6299060000000005}
       pcbRotation={90}
+      layer="bottom"
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P0V9",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VDD_CORE1"
+      maxDecouplingTraceLength="4mm"
     />
     <capacitor
         name="C14"
@@ -781,15 +1163,14 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.700007}
-      pcbY={13.2}
-      pcbRotation={180}
+      pcbX={-15.329913}
+      pcbY={13.20009}
+      pcbRotation={0}
+      layer="bottom"
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_PD"
+      maxDecouplingTraceLength="4mm"
     />
     <capacitor
         name="C34"
@@ -801,15 +1182,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-12.600007}
-      pcbY={-4}
-      pcbRotation={90}
+      pcbX={-11.7}
+      pcbY={-2.3}
+      pcbRotation={270}
       schRotation={0}
       schSectionName="cpu-analog"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .HPVCC"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C36"
@@ -841,15 +1220,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={6.099993}
-      pcbY={11.6}
+      pcbX={4.7}
+      pcbY={10.7}
       pcbRotation={0}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_RTC"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C31"
@@ -861,15 +1238,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-4.000007}
-      pcbY={17.400000000000002}
-      pcbRotation={270}
+      pcbX={-4.7}
+      pcbY={17}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V5",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_DRAM0"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C30"
@@ -881,15 +1256,14 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-5.200007}
-      pcbY={18.8}
+      pcbX={-5.499904999999999}
+      pcbY={17.429906}
       pcbRotation={270}
+      layer="bottom"
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V5",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_DRAM1"
+      maxDecouplingTraceLength="4mm"
     />
     <capacitor
         name="C25"
@@ -901,15 +1275,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.400007}
-      pcbY={7.6}
+      pcbX={-14.9}
+      pcbY={7.2}
       pcbRotation={180}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P0V9",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VDD_SYS2"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C11"
@@ -921,15 +1293,14 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.400007}
-      pcbY={6.4}
-      pcbRotation={180}
+      pcbX={-15.329913}
+      pcbY={6.400002}
+      pcbRotation={0}
+      layer="bottom"
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_IO"
+      maxDecouplingTraceLength="4mm"
     />
     <capacitor
         name="C24"
@@ -941,15 +1312,14 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-9.000007}
-      pcbY={18.8}
+      pcbX={-6.5}
+      pcbY={17.43}
       pcbRotation={270}
+      layer="bottom"
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P0V9",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VDD_SYS1"
+      maxDecouplingTraceLength="4mm"
     />
     <capacitor
         name="C37"
@@ -1001,15 +1371,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.700007}
+      pcbX={-14.9}
       pcbY={8.8}
       pcbRotation={180}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_TVOUT"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C19"
@@ -1021,15 +1389,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-6.9000070000000004}
-      pcbY={-4}
-      pcbRotation={90}
+      pcbX={-7.5}
+      pcbY={-2.2}
+      pcbRotation={270}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_TVIN"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C38"
@@ -1041,15 +1407,14 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.800007}
-      pcbY={2.9}
-      pcbRotation={180}
+      pcbX={-15.329913}
+      pcbY={3.599906}
+      pcbRotation={0}
+      layer="bottom"
       schRotation={0}
       schSectionName="cpu-analog"
-      connections={{
-        pin1: "net.Net_U3F_VRA2",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VRA2"
+      maxDecouplingTraceLength="4mm"
     />
     <capacitor
         name="C35"
@@ -1061,15 +1426,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.800007}
+      pcbX={-14.9}
       pcbY={4}
       pcbRotation={180}
       schRotation={0}
       schSectionName="cpu-analog"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .AVCC"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C39"
@@ -1081,15 +1444,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-16.800007}
-      pcbY={1.7}
+      pcbX={-14.9}
+      pcbY={2.8}
       pcbRotation={180}
       schRotation={0}
       schSectionName="cpu-analog"
-      connections={{
-        pin1: "net.Net_U3F_VRA1",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VRA1"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C9"
@@ -1101,15 +1462,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05A225MQ5NSNC"
       supplierPartNumbers={{ jlcpcb: ["C12530"] }}
-      pcbX={6.099993}
-      pcbY={13.8}
+      pcbX={4.7}
+      pcbY={12.9}
       pcbRotation={0}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .LDO_IN"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C13"
@@ -1121,15 +1480,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={0.899993}
-      pcbY={-4}
-      pcbRotation={90}
+      pcbX={0.9}
+      pcbY={-2.2}
+      pcbRotation={270}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_PG"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C29"
@@ -1161,15 +1518,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05A225MQ5NSNC"
       supplierPartNumbers={{ jlcpcb: ["C12530"] }}
-      pcbX={6.099993}
-      pcbY={12.7}
+      pcbX={4.7}
+      pcbY={11.8}
       pcbRotation={0}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .LDOA_OUT"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C18"
@@ -1181,19 +1536,17 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={5.699993}
-      pcbY={8.45}
+      pcbX={4.7}
+      pcbY={8.8}
       pcbRotation={0}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_PLL"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C32"
-        schX={-11}
+        schX={-12.5}
         schY={3}
         schSheetName="cpu-core"
       capacitance="10pF"
@@ -1221,15 +1574,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-7.100007}
-      pcbY={18.8}
-      pcbRotation={270}
+      pcbX={-6}
+      pcbY={17}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P1V8",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VDD18_DRAM"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C26"
@@ -1241,18 +1592,16 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={-2.000007}
-      pcbY={-4}
-      pcbRotation={90}
+      pcbX={-3.9}
+      pcbY={-2.2}
+      pcbRotation={270}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P0V9",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VDD_CORE0"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
-        name="C12"
+      name="C12"
         schX={-6}
         schY={8}
         schSheetName="cpu-core"
@@ -1261,15 +1610,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={0.499993}
-      pcbY={18.8}
-      pcbRotation={270}
+      pcbX={0.5}
+      pcbY={17}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-processor"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      decouplingFor=".U3 > .VCC_PE"
+      maxDecouplingTraceLength="3mm"
     />
     <resistor
         name="R11"
@@ -1305,7 +1652,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="cpu-analog"
       connections={{
-        pin1: "net.Net_U3B_DZQ",
+        pin1: "net.DDR_DZQ",
         pin2: "net.GND",
       }}
     />
@@ -1324,7 +1671,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="cpu-analog"
       connections={{
-        pin1: "net.Net_U3F_GPADC0",
+        pin1: "net.BOARD_ID_ADC",
         pin2: "net.GND",
       }}
     />
@@ -1343,7 +1690,8 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="cpu-analog"
       connections={{
-        pin2: "net.Net_U3F_GPADC0",
+        pin1: "net.P3V3",
+        pin2: "net.BOARD_ID_ADC",
       }}
     />
     <resistor
@@ -1441,6 +1789,141 @@ export const TrellisCore = () => (
         pin2: "net.GND",
       }}
     />
+    <SM06B_SRSS_TB_LF__SN_
+      name="J2"
+      displayName="SPI1 DISPLAY"
+      schX={-8}
+      schY={4}
+      schSheetName="cpu-io"
+      schSectionName="cpu-expansion"
+      pcbX={-21.8}
+      pcbY={-9}
+      pcbRotation={270}
+      schRotation={0}
+      schPinArrangement={{
+        leftSide: { pins: ["pin1", "pin2"], direction: "top-to-bottom" },
+        rightSide: { pins: ["pin3", "pin4", "pin5", "pin6"], direction: "top-to-bottom" },
+      }}
+      connections={{
+        pin1: "net.P3V3",
+        pin2: "net.GND",
+        pin3: "net.SPI1_CLK",
+        pin4: "net.SPI1_MOSI",
+        pin5: "net.SPI1_MISO",
+        pin6: "net.SPI1_CS0",
+      }}
+    />
+    <SM04B_SRSS_TB_LF__SN_
+      name="J3"
+      displayName="UART0 DEBUG"
+      schX={-8}
+      schY={-2}
+      schSheetName="cpu-io"
+      schSectionName="cpu-expansion"
+      pcbX={-21.8}
+      pcbY={0}
+      pcbRotation={270}
+      schRotation={0}
+      schPinArrangement={{
+        leftSide: { pins: ["pin1", "pin2"], direction: "top-to-bottom" },
+        rightSide: { pins: ["pin3", "pin4"], direction: "top-to-bottom" },
+      }}
+      connections={{
+        pin1: "net.P3V3",
+        pin2: "net.GND",
+        pin3: "net.UART0_TX",
+        pin4: "net.UART0_RX",
+      }}
+    />
+    <SN74AHCT1G125DCKR
+      name="U8"
+      displayName="LED 3V3 TO 5V"
+      pcbX={5.3} pcbY={-2} pcbRotation={0}
+      schX={-3} schY={-8} schHeight="0.6mm"
+      schSheetName="cpu-io" schSectionName="cpu-status"
+      connections={{
+        pin1: "net.GND",
+        pin2: "net.ADDR_LED_CTRL",
+        pin3: "net.GND",
+        pin4: "net.ADDR_LED_DATA_5V",
+        pin5: "net.VBUS",
+      }}
+    />
+    <resistor
+      name="R27" resistance="100kohm" footprint="res0402"
+      manufacturerPartNumber="0402WGF1003TCE"
+      supplierPartNumbers={{ jlcpcb: ["C25741"] }}
+      pcbX={2} pcbY={-3} pcbRotation={90}
+      schX={-7} schY={-8} schOrientation="vertical"
+      schSheetName="cpu-io" schSectionName="cpu-status"
+      connections={{ pin1: "net.ADDR_LED_CTRL", pin2: "net.GND" }}
+    />
+    <capacitor
+      name="C46" capacitance="100nF" footprint="cap0402"
+      manufacturerPartNumber="CL05B104KB54PNC"
+      supplierPartNumbers={{ jlcpcb: ["C307331"] }}
+      pcbX={4.65} pcbY={1.3} pcbRotation={90}
+      schX={-3} schY={-5.5} schOrientation="vertical"
+      schSheetName="cpu-io" schSectionName="cpu-status"
+      decouplingFor=".U8 > .VCC" maxDecouplingTraceLength="3mm"
+    />
+    <trace name="DECOUPLE_C46" from=".U8 > .VCC" to=".C46 > .pin1"
+      maxLength="3mm" pcbStraightLine />
+    <resistor
+      name="R26"
+      resistance="33ohm"
+      footprint="res0402"
+      manufacturerPartNumber="0402WGF330JTCE"
+      supplierPartNumbers={{ jlcpcb: ["C25105"] }}
+      schX={3.2}
+      schY={-8}
+      schSheetName="cpu-io"
+      schSectionName="cpu-status"
+      pcbX={7.65}
+      pcbY={-0.15}
+      pcbRotation={0}
+      schRotation={0}
+      connections={{
+        pin1: "net.ADDR_LED_DATA_5V",
+        pin2: "net.ADDR_LED_DIN",
+      }}
+    />
+    <XL_2121RGBC_2812B
+      name="U7"
+      displayName="ADDRESSABLE RGB"
+      schX={8.5}
+      schY={-8.68}
+      schSheetName="cpu-io"
+      schSectionName="cpu-status"
+      pcbX={8}
+      pcbY={2}
+      pcbRotation={0}
+      schRotation={0}
+      connections={{
+        pin1: "net.ADDR_LED_DIN",
+        pin2: "net.VBUS",
+        pin4: "net.GND",
+      }}
+      noConnect={["pin3"]}
+    />
+    <capacitor
+      name="C45"
+      capacitance="100nF"
+      footprint="cap0402"
+      schOrientation="vertical"
+      manufacturerPartNumber="CL05B104KB54PNC"
+      supplierPartNumbers={{ jlcpcb: ["C307331"] }}
+      schX={12}
+      schY={-8}
+      schSheetName="cpu-io"
+      schSectionName="cpu-status"
+      pcbX={10.8}
+      pcbY={2.5}
+      pcbRotation={0}
+      schRotation={0}
+      decouplingFor=".U7 > .VDD"
+      maxDecouplingTraceLength="3mm"
+    />
     <ZDSD04GLGEAG
         name="U5"
         schX={6}
@@ -1450,11 +1933,11 @@ export const TrellisCore = () => (
       pcbY={7.4}
       pcbRotation={90}
       schRotation={0}
-      schSectionName="storage-emmc"
+      schSectionName="storage-flash"
       connections={{
         pin1: "net.SDC0_D2",
         pin2: "net.SDC0_D3",
-        pin3: "net.Net_U5_CLK",
+        pin3: "net.SD_FLASH_CLK",
         pin4: "net.GND",
         pin5: "net.SDC0_CMD",
         pin6: "net.SDC0_D0",
@@ -1468,23 +1951,24 @@ export const TrellisCore = () => (
         schY={1}
         schSheetName="storage"
       schHeight="0.6mm"
-      pcbX={14.699993}
-      pcbY={14.587500000000002}
+      pcbX={13}
+      pcbY={15.8}
       pcbRotation={270}
       schRotation={0}
       schSectionName="storage-clock-gate"
       connections={{
         pin1: "net.SDC0_CLK",
-        pin2: "net.Net_C44_Pad1",
+        pin2: "net.SD_FLASH_CLK_GATE_EN",
         pin3: "net.GND",
-        pin4: "net.Net_R23_Pad1",
+        pin4: "net.SD_FLASH_CLK_GATED",
         pin5: "net.P3V3",
       }}
     />
     <TSA010A2026B
         name="SW2"
+        displayName="FEL / SD FLASH DISABLE"
         schX={-1.5}
-        schY={-4.5}
+        schY={-3.87}
         schSheetName="storage"
       pcbX={14.699993}
       pcbY={20.8}
@@ -1493,7 +1977,7 @@ export const TrellisCore = () => (
       schSectionName="storage-reset"
       connections={{
         pin1: "net.GND",
-        pin2: "net.Net_C44_Pad1",
+        pin2: "net.SD_FLASH_CLK_GATE_EN",
       }}
     />
     <capacitor
@@ -1506,15 +1990,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL10A106MA8NRNC"
       supplierPartNumbers={{ jlcpcb: ["C96446"] }}
-      pcbX={22.099993}
-      pcbY={4.5875}
-      pcbRotation={270}
+      pcbX={12.95}
+      pcbY={11.8}
+      pcbRotation={90}
       schRotation={0}
-      schSectionName="storage-emmc"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      schSectionName="storage-flash"
+      decouplingFor=".U5 > .VDD"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C44"
@@ -1532,7 +2014,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="storage-reset"
       connections={{
-        pin1: "net.Net_C44_Pad1",
+        pin1: "net.SD_FLASH_CLK_GATE_EN",
         pin2: "net.GND",
       }}
     />
@@ -1546,15 +2028,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={20.399993}
-      pcbY={0.8875}
+      pcbX={15.395}
+      pcbY={13.2}
       pcbRotation={90}
       schRotation={0}
-      schSectionName="storage-emmc"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      schSectionName="storage-flash"
+      decouplingFor=".U5 > .VDD"
+      maxDecouplingTraceLength="3mm"
     />
     <capacitor
         name="C43"
@@ -1566,15 +2046,13 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      pcbX={14.399993}
-      pcbY={17}
-      pcbRotation={0}
+      pcbX={10.3}
+      pcbY={16.9}
+      pcbRotation={180}
       schRotation={0}
-      schSectionName="storage-emmc"
-      connections={{
-        pin1: "net.P3V3",
-        pin2: "net.GND",
-      }}
+      schSectionName="storage-flash"
+      decouplingFor=".U6 > .VCC"
+      maxDecouplingTraceLength="3mm"
     />
     <resistor
         name="R23"
@@ -1591,8 +2069,8 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="storage-clock-gate"
       connections={{
-        pin1: "net.Net_R23_Pad1",
-        pin2: "net.Net_U5_CLK",
+        pin1: "net.SD_FLASH_CLK_GATED",
+        pin2: "net.SD_FLASH_CLK",
       }}
     />
     <resistor
@@ -1608,7 +2086,7 @@ export const TrellisCore = () => (
       pcbY={0.8875}
       pcbRotation={270}
       schRotation={0}
-      schSectionName="storage-emmc"
+      schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
         pin2: "net.SDC0_D1",
@@ -1627,7 +2105,7 @@ export const TrellisCore = () => (
       pcbY={0.8875}
       pcbRotation={270}
       schRotation={0}
-      schSectionName="storage-emmc"
+      schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
         pin2: "net.SDC0_D0",
@@ -1646,7 +2124,7 @@ export const TrellisCore = () => (
       pcbY={13.2875}
       pcbRotation={90}
       schRotation={0}
-      schSectionName="storage-emmc"
+      schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
         pin2: "net.SDC0_D3",
@@ -1667,7 +2145,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="storage-reset"
       connections={{
-        pin1: "net.Net_C44_Pad1",
+        pin1: "net.SD_FLASH_CLK_GATE_EN",
         pin2: "net.P3V3",
       }}
     />
@@ -1684,7 +2162,7 @@ export const TrellisCore = () => (
       pcbY={0.8875}
       pcbRotation={270}
       schRotation={0}
-      schSectionName="storage-emmc"
+      schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
         pin2: "net.SDC0_CMD",
@@ -1703,7 +2181,7 @@ export const TrellisCore = () => (
       pcbY={13.2875}
       pcbRotation={90}
       schRotation={0}
-      schSectionName="storage-emmc"
+      schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
         pin2: "net.SDC0_D2",
@@ -1713,6 +2191,30 @@ export const TrellisCore = () => (
         name="J1"
         schX={-9}
         schY={0}
+        schWidth="3.2mm"
+        schHeight="2.15mm"
+        schPinArrangement={{
+          leftSide: [
+            "SHELL1",
+            "SHELL2",
+            "SHELL3",
+            "SHELL4",
+            "GND1",
+            "GND2",
+            "VBUS1",
+            "VBUS2",
+          ],
+          rightSide: [
+            "CC2",
+            "SBU1",
+            "DP2",
+            "DM1",
+            "DP1",
+            "DM2",
+            "CC1",
+            "SBU2",
+          ],
+        }}
         schSheetName="usb"
       pcbX={-0.000007000000000090267}
       pcbY={-20.9}
@@ -1725,14 +2227,14 @@ export const TrellisCore = () => (
         pin3: "net.GND",
         pin4: "net.GND",
         pin5: "net.GND",
-        pin6: "net.Net_U4_VBUS",
+        pin6: "net.USB_VBUS_RAW",
         pin7: "net.GND",
-        pin8: "net.Net_U4_VBUS",
+        pin8: "net.USB_VBUS_RAW",
         pin9: "net.USB0_CC2",
-        pin11: "net.Net_J1_DP_PadA6",
-        pin12: "net.Net_J1_D_PadA7",
-        pin13: "net.Net_J1_DP_PadA6",
-        pin14: "net.Net_J1_D_PadA7",
+        pin11: "net.USB0_CONN_DP",
+        pin12: "net.USB0_CONN_DM",
+        pin13: "net.USB0_CONN_DP",
+        pin14: "net.USB0_CONN_DM",
         pin15: "net.USB0_CC1",
       }}
       noConnect={["pin10", "pin16"]}
@@ -1748,11 +2250,11 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="usb-protection"
       connections={{
-        pin1: "net.Net_J1_D_PadA7",
+        pin1: "net.USB0_CONN_DM",
         pin2: "net.GND",
-        pin3: "net.Net_J1_DP_PadA6",
+        pin3: "net.USB0_CONN_DP",
         pin4: "net.USB0_DP",
-        pin5: "net.Net_U4_VBUS",
+        pin5: "net.USB_VBUS_RAW",
         pin6: "net.USB0_DN",
       }}
     />
@@ -1767,7 +2269,7 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="usb-protection"
       connections={{
-        pin1: "net.Net_U4_VBUS",
+        pin1: "net.USB_VBUS_RAW",
         pin2: "net.VBUS",
       }}
     />

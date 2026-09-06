@@ -1,0 +1,219 @@
+[
+  {
+    "capacitor": "C1",
+    "chip": "U1",
+    "pin": 4,
+    "label": "VIN",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C7",
+    "chip": "U2",
+    "pin": 4,
+    "label": "VIN",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C9",
+    "chip": "U3",
+    "pin": 29,
+    "label": "LDO_IN",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C11",
+    "chip": "U3",
+    "pin": 83,
+    "label": "VCC_IO",
+    "maxLength": 4
+  },
+  {
+    "capacitor": "C12",
+    "chip": "U3",
+    "pin": 34,
+    "label": "VCC_PE",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C13",
+    "chip": "U3",
+    "pin": 128,
+    "label": "VCC_PG",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C14",
+    "chip": "U3",
+    "pin": 66,
+    "label": "VCC_PD",
+    "maxLength": 4
+  },
+  {
+    "capacitor": "C15",
+    "chip": "U3",
+    "pin": 77,
+    "label": "VCC_TVOUT",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C16",
+    "chip": "U3",
+    "pin": 28,
+    "label": "LDOA_OUT",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C17",
+    "chip": "U3",
+    "pin": 26,
+    "label": "VCC_RTC",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C18",
+    "chip": "U3",
+    "pin": 20,
+    "label": "VCC_PLL",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C19",
+    "chip": "U3",
+    "pin": 107,
+    "label": "VCC_TVIN",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C20",
+    "chip": "U3",
+    "pin": 65,
+    "label": "VCC_LVDS",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C21",
+    "chip": "U3",
+    "pin": 50,
+    "label": "VDD18_DRAM",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C23",
+    "chip": "U3",
+    "pin": 46,
+    "label": "VDD_SYS0",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C24",
+    "chip": "U3",
+    "pin": 51,
+    "label": "VDD_SYS1",
+    "maxLength": 4
+  },
+  {
+    "capacitor": "C25",
+    "chip": "U3",
+    "pin": 81,
+    "label": "VDD_SYS2",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C26",
+    "chip": "U3",
+    "pin": 116,
+    "label": "VDD_CORE0",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C27",
+    "chip": "U3",
+    "pin": 117,
+    "label": "VDD_CORE1",
+    "maxLength": 4
+  },
+  {
+    "capacitor": "C28",
+    "chip": "U3",
+    "pin": 30,
+    "label": "LDOB_OUT",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C30",
+    "chip": "U3",
+    "pin": 49,
+    "label": "VCC_DRAM1",
+    "maxLength": 4
+  },
+  {
+    "capacitor": "C31",
+    "chip": "U3",
+    "pin": 48,
+    "label": "VCC_DRAM0",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C34",
+    "chip": "U3",
+    "pin": 97,
+    "label": "HPVCC",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C35",
+    "chip": "U3",
+    "pin": 89,
+    "label": "AVCC",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C38",
+    "chip": "U3",
+    "pin": 90,
+    "label": "VRA2",
+    "maxLength": 4
+  },
+  {
+    "capacitor": "C39",
+    "chip": "U3",
+    "pin": 92,
+    "label": "VRA1",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C41",
+    "chip": "U5",
+    "pin": 8,
+    "label": "VDD",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C42",
+    "chip": "U5",
+    "pin": 8,
+    "label": "VDD",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C43",
+    "chip": "U6",
+    "pin": 5,
+    "label": "VCC",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C45",
+    "chip": "U7",
+    "pin": 2,
+    "label": "VDD",
+    "maxLength": 3
+  },
+  {
+    "capacitor": "C46",
+    "chip": "U8",
+    "pin": 5,
+    "label": "VCC",
+    "maxLength": 3
+  }
+]

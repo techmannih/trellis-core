@@ -1,27 +1,28 @@
 import type { ChipProps } from "@tscircuit/props"
 
 const pinLabels = {
-  pin1: ["pin1"],
-  pin2: ["pin2"],
-  pin3: ["pin3"],
-  pin4: ["pin4"],
-  pin5: ["A1B12"],
-  pin6: ["A4B9"],
-  pin7: ["B1A12"],
-  pin8: ["B4A9"],
-  pin9: ["B5"],
-  pin10: ["A8"],
-  pin11: ["B6"],
-  pin12: ["A7"],
-  pin13: ["A6"],
-  pin14: ["B7"],
-  pin15: ["A5"],
-  pin16: ["B8"]
+  pin1: ["SHELL1", "MH1"],
+  pin2: ["SHELL2", "MH2"],
+  pin3: ["SHELL3", "MH3"],
+  pin4: ["SHELL4", "MH4"],
+  pin5: ["GND1", "A1B12"],
+  pin6: ["VBUS1", "A4B9"],
+  pin7: ["GND2", "B1A12"],
+  pin8: ["VBUS2", "B4A9"],
+  pin9: ["CC2", "B5"],
+  pin10: ["SBU1", "A8"],
+  pin11: ["DP2", "B6"],
+  pin12: ["DM1", "DN1", "A7"],
+  pin13: ["DP1", "A6"],
+  pin14: ["DM2", "DN2", "B7"],
+  pin15: ["CC1", "A5"],
+  pin16: ["SBU2", "B8"]
 } as const
 
 export const HX_TYPE_C_16P_L8_35 = (props: ChipProps<typeof pinLabels>) => {
   return (
-    <chip
+    <connector
+      standard="usb_c"
       pinLabels={pinLabels}
       supplierPartNumbers={{
   "jlcpcb": [

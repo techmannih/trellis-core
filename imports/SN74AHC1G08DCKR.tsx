@@ -12,6 +12,10 @@ export const SN74AHC1G08DCKR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{
+        pin5: { requiresPower: true },
+        pin3: { requiresGround: true },
+      }}
       supplierPartNumbers={{
   "jlcpcb": [
     "C122838"

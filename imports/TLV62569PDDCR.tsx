@@ -13,6 +13,10 @@ export const TLV62569PDDCR = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{
+        pin4: { requiresPower: true },
+        pin2: { requiresGround: true },
+      }}
       supplierPartNumbers={{
   "jlcpcb": [
     "C398365"

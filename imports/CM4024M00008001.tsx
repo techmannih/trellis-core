@@ -7,10 +7,116 @@ const pinLabels = {
   pin4: ["GND2"]
 } as const
 
+const pinAttributes = {
+  pin2: {requiresGround: true},
+  pin4: {requiresGround: true}
+} as const
+
 export const CM4024M00008001 = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={pinAttributes}
+      symbol={
+        <symbol>
+          <port
+            name="pin1"
+            pinNumber={1}
+            aliases={["1"]}
+            direction="left"
+            schX={-1.2}
+            schY={-0.3}
+            schStemLength={0.4}
+          />
+          <port
+            name="pin3"
+            pinNumber={3}
+            aliases={["3"]}
+            direction="right"
+            schX={1.2}
+            schY={0.3}
+            schStemLength={0.4}
+          />
+          <port
+            name="pin4"
+            pinNumber={4}
+            aliases={["GND2", "GND"]}
+            direction="left"
+            schX={-1.2}
+            schY={0.3}
+            schStemLength={0.4}
+          />
+          <port
+            name="pin2"
+            pinNumber={2}
+            aliases={["GND1", "GND"]}
+            direction="right"
+            schX={1.2}
+            schY={-0.3}
+            schStemLength={0.4}
+          />
+          <schematicrect
+            schX={0}
+            schY={0}
+            width={1.6}
+            height={1.2}
+            strokeWidth={0.02}
+            color="#880000"
+          />
+          <schematiccircle
+            center={{ x: -0.65, y: -0.45 }}
+            radius={0.04}
+            strokeWidth={0.02}
+            color="#880000"
+            isFilled
+            fillColor="#880000"
+          />
+          <schematicpath
+            points={[
+              { x: -0.25, y: -0.28 },
+              { x: -0.25, y: 0.28 },
+            ]}
+            strokeWidth={0.02}
+            strokeColor="#881100"
+          />
+          <schematicpath
+            points={[
+              { x: 0.25, y: -0.28 },
+              { x: 0.25, y: 0.28 },
+            ]}
+            strokeWidth={0.02}
+            strokeColor="#881100"
+          />
+          <schematicpath
+            points={[
+              { x: -0.8, y: -0.3 },
+              { x: -0.45, y: -0.3 },
+              { x: -0.45, y: 0 },
+              { x: -0.25, y: 0 },
+            ]}
+            strokeWidth={0.02}
+            strokeColor="#880000"
+          />
+          <schematicpath
+            points={[
+              { x: 0.8, y: 0.3 },
+              { x: 0.45, y: 0.3 },
+              { x: 0.45, y: 0 },
+              { x: 0.25, y: 0 },
+            ]}
+            strokeWidth={0.02}
+            strokeColor="#880000"
+          />
+          <schematicrect
+            schX={0}
+            schY={0}
+            width={0.18}
+            height={0.52}
+            strokeWidth={0.02}
+            color="#880000"
+          />
+        </symbol>
+      }
       supplierPartNumbers={{
   "jlcpcb": [
     "C7294624"

@@ -135,6 +135,27 @@ const pinLabels = {
 } as const
 
 const pinAttributes = {
+  pin20: { requiresPower: true },
+  pin26: { requiresPower: true },
+  pin29: { requiresPower: true },
+  pin34: { requiresPower: true },
+  pin46: { requiresPower: true },
+  pin48: { requiresPower: true },
+  pin49: { requiresPower: true },
+  pin50: { requiresPower: true },
+  pin51: { requiresPower: true },
+  pin65: { requiresPower: true },
+  pin66: { requiresPower: true },
+  pin77: { requiresPower: true },
+  pin81: { requiresPower: true },
+  pin83: { requiresPower: true },
+  pin89: { requiresPower: true },
+  pin97: { requiresPower: true },
+  pin107: { requiresPower: true },
+  pin116: { requiresPower: true },
+  pin117: { requiresPower: true },
+  pin128: { requiresPower: true },
+  pin129: { requiresGround: true },
   pin91: {requiresGround: true},
   pin106: {doNotConnect: true}
 } as const

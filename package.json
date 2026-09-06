@@ -12,10 +12,10 @@
     "trellis-core"
   ],
   "scripts": {
-    "dev": "tsci dev",
-    "start": "tsci dev",
+    "dev": "tsci dev index.circuit.tsx",
+    "start": "tsci dev index.circuit.tsx",
     "typecheck": "tsc --noEmit",
-    "verify": "bun run typecheck && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bunx tsci check shorts index.circuit.tsx && bunx tsci build index.circuit.tsx",
+    "verify": "bun run typecheck && bun test scripts/check-decoupling.test.mjs && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bun run build && bun run check:decoupling && bunx tsci check shorts dist/index/circuit.json",
     "check": "bun run verify",
     "build": "tsci build index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
     "build:preview": "tsci build --pcb-png --schematic-png --3d-png index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
@@ -23,10 +23,12 @@
     "snapshot": "tsci snapshot index.circuit.tsx --disable-parts-engine",
     "snapshot:update": "tsci snapshot index.circuit.tsx --update --disable-parts-engine",
     "snapshot:3d": "tsci snapshot index.circuit.tsx --3d --camera-preset top-left-corner --disable-parts-engine",
-    "snapshot:3d:update": "tsci snapshot index.circuit.tsx --update --3d --camera-preset top-left-corner --disable-parts-engine"
+    "snapshot:3d:update": "tsci snapshot index.circuit.tsx --update --3d --camera-preset top-left-corner --disable-parts-engine",
+    "check:decoupling": "bun scripts/check-decoupling.mjs"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
-    "tscircuit": "0.0.2442",
+    "tscircuit": "0.0.2464",
     "typescript": "^5.9.2"
-  }}
+  }
+}

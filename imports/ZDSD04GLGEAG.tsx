@@ -15,6 +15,10 @@ export const ZDSD04GLGEAG = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={{
+        pin8: { requiresPower: true },
+        pin4: { requiresGround: true },
+      }}
       supplierPartNumbers={{
   "jlcpcb": [
     "C2875854"
