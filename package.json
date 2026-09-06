@@ -1,6 +1,6 @@
 {
   "name": "@tsci/trellis-core",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "private": true,
   "description": "A derived tscircuit layout of the Protolux Trellis Core board",
   "main": "index.circuit.tsx",
@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit",
     "verify": "bun run typecheck && bun test scripts/check-decoupling.test.mjs && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bun run build && bun run check:decoupling && bunx tsci check shorts dist/index/circuit.json",
     "check": "bun run verify",
-    "build": "tsci build index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
+    "build": "tsci build index.circuit.tsx --all-images --pcb-png --schematic-png --svgs --autorouter-timeout 600s --disable-parts-engine",
     "build:preview": "tsci build --pcb-png --schematic-png --3d-png index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
     "build:handoff": "tsci build --kicad-project-zip --step --glbs index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
     "snapshot": "tsci snapshot index.circuit.tsx --disable-parts-engine",
