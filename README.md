@@ -48,6 +48,8 @@ flowchart LR
   CPU --> GATE --> FLASH
 ```
 
+
+
 1. The USB-C connector supplies 5 V power and USB 2.0 data. A resettable fuse protects the power path, while an ESD protection device sits between the connector and the processor's USB pins.
 2. The first buck regulator creates the 3.3 V system rail. Its power-good output enables the second regulator so the 0.9 V processor core rail starts in sequence.
 3. The processor uses its internal regulators for the 1.8 V and 1.5 V auxiliary rails. Local capacitors provide decoupling for every power domain.
