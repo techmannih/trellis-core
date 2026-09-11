@@ -1,8 +1,8 @@
 import type { LedProps } from "@tscircuit/props"
 
 const pinLabels = {
-  pin1: ["cathode","neg"],
-  pin2: ["anode","pos"]
+  pin1: ["anode", "pos"],
+  pin2: ["cathode", "neg"]
 } as const
 
 export const NCD0805R1 = (props: LedProps) => {
@@ -19,8 +19,8 @@ export const NCD0805R1 = (props: LedProps) => {
 }}
       manufacturerPartNumber="NCD0805R1"
       footprint={<footprint>
-        <smtpad portHints={["pin2","anode","pos"]} pcbX="1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
-<smtpad portHints={["pin1","cathode","neg"]} pcbX="-1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
+        <smtpad portHints={["pin1", "anode", "pos"]} pcbX="1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
+        <smtpad portHints={["pin2", "cathode", "neg"]} pcbX="-1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
 <silkscreenpath route={[{"x":0.4999735999999757,"y":0.9499091999999791},{"x":1.980056999999988,"y":0.9598913999999468}]} />
 <silkscreenpath route={[{"x":0.6400545999999849,"y":-0.9401047999999719},{"x":1.980056999999988,"y":-0.9401047999999719}]} />
 <silkscreenpath route={[{"x":1.980056999999988,"y":0.9598913999999468},{"x":1.980056999999988,"y":-0.9401302000001124}]} />

@@ -35,8 +35,12 @@ export const TrellisCore = () => (
     defaultTraceWidth="0.2mm"
     minViaHoleDiameter="0.2mm"
     minViaPadDiameter="0.4mm"
+    minViaEdgeToPadEdgeClearance="0.1mm"
     pcbStyle={{ viaPadDiameter: "0.4mm", viaHoleDiameter: "0.2mm" }}
     autorouterEffortLevel="5x"
+    // Preserve the hand-routed bypass and clock paths as fixed copper.
+    // Pipeline 9 can move these vias or introduce layer changes into zero-via paths.
+    autorouterVersion="beta_pipeline7"
     schAutoLayoutEnabled
     schTraceAutoLabelEnabled
     schMaxTraceDistance="0.8mm"
@@ -450,6 +454,14 @@ export const TrellisCore = () => (
       fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
     <trace name="RETURN_C46" from=".C46 > .pin2" to=".GND_C46 > .top"
       maxLength="1mm" pcbStraightLine />
+    <via name="GND_C36" pcbX={8.710000} pcbY={14.700000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C36" from=".C36 > .pin2" to=".GND_C36 > .top"
+      maxLength="1mm" pcbStraightLine />
+    <via name="GND_C37" pcbX={9.690000} pcbY={14.700000}
+      fromLayer="top" toLayer="bottom" outerDiameter="0.4mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+    <trace name="RETURN_C37" from=".C37 > .pin2" to=".GND_C37 > .top"
+      maxLength="1mm" pcbStraightLine />
     <copperpour name="GND_PLANE" layer="inner1" connectsTo="net.GND" clearance="0.2mm" boardEdgeMargin="0.3mm" />
 
     <hole name="H1" diameter="2.7mm" pcbX={-22} pcbY={22} />
@@ -531,14 +543,15 @@ export const TrellisCore = () => (
         schY={4.8}
         schSheetName="power"
       color="red"
+      schOrientation="vertical"
       pcbX={-6.900007}
       pcbY={-21.2}
       pcbRotation={90}
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.POWER_LED_K",
-        pin2: "net.P3V3",
+        pin1: "net.P3V3",
+        pin2: "net.POWER_LED_K",
       }}
     />
     <capacitor
@@ -757,10 +770,11 @@ export const TrellisCore = () => (
     <resistor
         name="R4"
         schX={5.5}
-        schY={-1.58}
+        schY={3.2}
         schSheetName="power"
       resistance="5.1kohm"
       footprint="res0402"
+      schOrientation="vertical"
       manufacturerPartNumber="0402WGF5101TCE"
       supplierPartNumbers={{ jlcpcb: ["C25905"] }}
       pcbX={-6.900007}
@@ -998,12 +1012,83 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="cpu-clocks"
     />
-    <trace name="XTAL24_DXIN" from=".OSC1 > .pin1" to="net.DXIN" schDisplayLabel="DXIN" />
     <trace name="XTAL24_GND1" from=".OSC1 > .GND1" to="net.GND" schDisplayLabel="GND" />
-    <trace name="XTAL24_DXOUT" from=".OSC1 > .pin3" to="net.DXOUT" schDisplayLabel="DXOUT" />
     <trace name="XTAL24_GND2" from=".OSC1 > .GND2" to="net.GND" schDisplayLabel="GND" />
-    <trace name="XTAL32_LXIN" from=".OSC2 > .pin1" to="net.LXIN" schDisplayLabel="LXIN" />
-    <trace name="XTAL32_LXOUT" from=".OSC2 > .pin2" to="net.LXOUT" schDisplayLabel="LXOUT" />
+    <trace name="OSC1_C33" from=".OSC1 > .pin1" to=".C33 > .pin1"
+      pcbStraightLine maxViaCount={0} />
+    <trace
+      name="U3_DXOUT"
+      from=".U3 > .pin22"
+      to=".OSC1 > .pin1"
+      schDisplayLabel="DXOUT"
+      connectsTo="net.DXOUT"
+      pcbPath={[
+        { x: 2.2, y: -8.5 },
+        { x: 1.9, y: -9.1 },
+        { x: 1.9, y: -11.8 },
+        { x: -0.6, y: -12.5 },
+        { x: -0.6, y: -14.75 },
+      ]}
+      maxViaCount={0}
+    />
+    <trace
+      name="U3_DXIN"
+      from=".U3 > .pin23"
+      to=".OSC1 > .pin3"
+      schDisplayLabel="DXIN"
+      connectsTo="net.DXIN"
+      pcbPath={[
+        { x: 2.6, y: -8.5 },
+        { x: 2.2, y: -9.1 },
+        { x: 2.15, y: -12.7 },
+      ]}
+      maxViaCount={0}
+    />
+    <trace
+      name="U3_LXOUT"
+      from=".U3 > .pin24"
+      to=".OSC2 > .pin1"
+      schDisplayLabel="LXOUT"
+      connectsTo="net.LXOUT"
+      pcbPath={[
+        { x: 3.0, y: -8.5 },
+        { x: 2.5, y: -9.1 },
+        { x: 2.5, y: -12.1 },
+        { x: 3.2, y: -12.3 },
+        { x: 3.2, y: -15.75 },
+      ]}
+      maxViaCount={0}
+    />
+    <trace
+      name="U3_LXIN"
+      from=".U3 > .pin25"
+      to=".OSC2 > .pin2"
+      schDisplayLabel="LXIN"
+      connectsTo="net.LXIN"
+      pcbPath={[
+        { x: 3.4, y: -8.5 },
+        { x: 2.8, y: -9.1 },
+        { x: 2.8, y: -11.9 },
+        { x: 4.6, y: -11.9 },
+      ]}
+      maxViaCount={0}
+    />
+    <trace
+      name="OSC2_C37"
+      from=".OSC2 > .pin1"
+      to=".C37 > .pin1"
+      schDisplayLabel="LXOUT"
+      pcbPath={[]}
+      maxViaCount={0}
+    />
+    <trace
+      name="OSC2_C36"
+      from=".OSC2 > .pin2"
+      to=".C36 > .pin1"
+      schDisplayLabel="LXIN"
+      pcbPath={[]}
+      maxViaCount={0}
+    />
     <TSA010A2026B
         name="SW1"
         displayName="RESET"
@@ -1108,7 +1193,7 @@ export const TrellisCore = () => (
       supplierPartNumbers={{ jlcpcb: ["C12530"] }}
       pcbX={6.249993000000001}
       pcbY={22}
-      pcbRotation={270}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-reset"
       connections={{
@@ -1629,7 +1714,7 @@ export const TrellisCore = () => (
       supplierPartNumbers={{ jlcpcb: ["C25741"] }}
       pcbX={6.249993000000001}
       pcbY={19.900000000000002}
-      pcbRotation={270}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-reset"
       connections={{
@@ -1667,7 +1752,7 @@ export const TrellisCore = () => (
       supplierPartNumbers={{ jlcpcb: ["C25741"] }}
       pcbX={-8.800006999999999}
       pcbY={-4}
-      pcbRotation={90}
+      pcbRotation={270}
       schRotation={0}
       schSectionName="cpu-analog"
       connections={{
@@ -1686,7 +1771,7 @@ export const TrellisCore = () => (
       supplierPartNumbers={{ jlcpcb: ["C25741"] }}
       pcbX={-10.700007000000001}
       pcbY={-4}
-      pcbRotation={270}
+      pcbRotation={90}
       schRotation={0}
       schSectionName="cpu-analog"
       connections={{
@@ -1800,6 +1885,15 @@ export const TrellisCore = () => (
       pcbY={-9}
       pcbRotation={270}
       schRotation={0}
+      schHeight={1.0}
+      pinLabels={{
+        pin1: ["3V3"],
+        pin2: ["GND"],
+        pin3: ["CLK"],
+        pin4: ["MOSI"],
+        pin5: ["MISO"],
+        pin6: ["CS"],
+      }}
       schPinArrangement={{
         leftSide: { pins: ["pin1", "pin2"], direction: "top-to-bottom" },
         rightSide: { pins: ["pin3", "pin4", "pin5", "pin6"], direction: "top-to-bottom" },
@@ -1824,6 +1918,12 @@ export const TrellisCore = () => (
       pcbY={0}
       pcbRotation={270}
       schRotation={0}
+      pinLabels={{
+        pin1: ["3V3"],
+        pin2: ["GND"],
+        pin3: ["TX"],
+        pin4: ["RX"],
+      }}
       schPinArrangement={{
         leftSide: { pins: ["pin1", "pin2"], direction: "top-to-bottom" },
         rightSide: { pins: ["pin3", "pin4"], direction: "top-to-bottom" },
@@ -1888,6 +1988,8 @@ export const TrellisCore = () => (
         pin2: "net.ADDR_LED_DIN",
       }}
     />
+    <trace name="U8_R26" from=".U8 > .pin4" to=".R26 > .pin1" pcbPath={[]} maxViaCount={0} />
+    <trace name="R26_U7" from=".R26 > .pin2" to=".U7 > .pin1" pcbPath={[]} maxViaCount={0} />
     <XL_2121RGBC_2812B
       name="U7"
       displayName="ADDRESSABLE RGB"

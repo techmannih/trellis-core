@@ -9,7 +9,7 @@ const pinLabels = {
   pin4: ["pin4"]
 } as const
 
-export const SM04B_SRSS_TB_LF__SN_ = (props: ChipProps<typeof pinLabels>) => {
+export const SM04B_SRSS_TB_LF__SN_ = (props: ChipProps<any>) => {
   return (
     <connector
       standard="jst_sh"

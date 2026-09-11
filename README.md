@@ -119,6 +119,10 @@ U7 is powered by protected 5 V VBUS. Its [manufacturer datasheet](https://datash
 
 ## Decoupling and review checks
 
+The board selects `autorouterVersion="beta_pipeline7"` to preserve its explicit bypass, crystal, and LED signal paths as fixed copper. With the pinned tscircuit version, Pipeline 9 can move these paths and introduce vias despite `maxViaCount={0}`. Via-to-pad clearance is explicitly set to 0.1 mm so routing and final DRC use the same limit. The OSC1–C33 load-capacitor branch also has an explicit zero-via route.
+
+The Bun patch for `@tscircuit/core@0.0.1889` preserves explicit router endpoint IDs when importing inner-layer traces between through-vias. Without it, core can lose the source-net identity because the vias' logical ports are on top, causing the Gerber short checker to treat a GND segment as an unrelated net. The patch changes net attribution only; copper geometry and clearance checks remain intact. `bun install` applies it, and `scripts/via-net-identity.test.mjs` checks that ground and signal routes retain separate identities.
+
 The [decoupling map](scripts/decoupling-map.json) lists every local bypass capacitor, its exact IC power/reference pin, and its maximum routed length. Each `DECOUPLE_C*` trace has a dedicated physical path. Top-layer paths have a 3 mm ceiling; the six bottom-layer CPU bypasses have a 4 mm ceiling that includes the 1.6 mm through-via. Capacitor pin 1 faces the IC. Each pin 2 has a dedicated return of at most 1 mm to a nearby through-via tied to the inner GND plane. `decouplingFor` remains on each capacitor for inspection; an explicit trace supplies the physical route, so `decouplingTo` is intentionally omitted to avoid duplicate generated traces.
 
 `bun run check:decoupling` measures the built copper polyline, including both sides of vias and via depth. It fails for missing/wrong pin mappings, missing direct routes, ungrounded capacitors, changed limits, excessive length, or any build errors (the CLI can otherwise return success despite routing errors). It is part of `bun run verify`. These are board layout constraints, not a substitute for power-integrity measurements.

@@ -1,0 +1,20 @@
+diff --git a/dist/index.js b/dist/index.js
+index 4651eb98f03f354833c2cdd34adb46310d2e7417..1d378d2c9d85e0fc5774f992d965ce7e87518fcb 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -62452,6 +62452,15 @@ function getSourcePortIdsFromRoutedTrace(db, trace) {
+       if (sourcePortId) sourcePortIds.add(sourcePortId);
+     }
+   }
++  // Inner-layer routes can end at through-vias whose logical ports are on top.
++  // Keep the router's explicit port identities when endpoint geometry alone
++  // cannot recover them on the routed layer.
++  if (sourcePortIds.size === 0) {
++    for (const pcbPortId of trace.connectsTo ?? []) {
++      const sourcePortId = db.pcb_port.get(pcbPortId)?.source_port_id;
++      if (sourcePortId) sourcePortIds.add(sourcePortId);
++    }
++  }
+   if (sourcePortIds.size > 0) return [...sourcePortIds];
+   return getEndpointSourcePortIdsFromGeometry(db, trace);
+ }

@@ -115,6 +115,20 @@ export const CM4024M00008001 = (props: ChipProps<typeof pinLabels>) => {
             strokeWidth={0.02}
             color="#880000"
           />
+          <schematictext
+            text="{REF}"
+            schX={0}
+            schY={0.8}
+            fontSize={0.2}
+            anchor="center"
+          />
+          <schematictext
+            text="24MHz"
+            schX={0}
+            schY={-0.8}
+            fontSize={0.2}
+            anchor="center"
+          />
         </symbol>
       }
       supplierPartNumbers={{

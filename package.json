@@ -15,7 +15,7 @@
     "dev": "tsci dev index.circuit.tsx",
     "start": "tsci dev index.circuit.tsx",
     "typecheck": "tsc --noEmit",
-    "verify": "bun run typecheck && bun test scripts/check-decoupling.test.mjs && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bun run build && bun run check:decoupling && bunx tsci check shorts dist/index/circuit.json",
+    "verify": "bun run typecheck && bun test scripts/*.test.mjs && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bun run build && bun run check:decoupling && bunx tsci check shorts dist/index/circuit.json",
     "check": "bun run verify",
     "build": "tsci build index.circuit.tsx --all-images --pcb-png --schematic-png --svgs --autorouter-timeout 600s --disable-parts-engine",
     "build:preview": "tsci build --pcb-png --schematic-png --3d-png index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
@@ -28,7 +28,10 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
-    "tscircuit": "0.0.2464",
+    "tscircuit": "0.0.2503",
     "typescript": "^5.9.2"
+  },
+  "patchedDependencies": {
+    "@tscircuit/core@0.0.1889": "patches/@tscircuit%2Fcore@0.0.1889.patch"
   }
 }
