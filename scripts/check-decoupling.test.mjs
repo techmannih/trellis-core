@@ -34,6 +34,8 @@ function fixture() {
     { type: "source_net", name: "GND", source_net_id: "gnd", is_ground: true, subcircuit_connectivity_map_key: "gnd" },
     { type: "source_component", name: "C1", source_component_id: "c1", max_decoupling_trace_length: 3 },
     { type: "source_component", name: "U1", source_component_id: "u1" },
+    { type: "pcb_component", source_component_id: "c1", layer: "top" },
+    { type: "pcb_component", source_component_id: "u1", layer: "top" },
     { type: "source_port", source_port_id: "c+", source_component_id: "c1", pin_number: 1 },
     { type: "source_port", source_port_id: "c-", source_component_id: "c1", pin_number: 2, subcircuit_connectivity_map_key: "gnd" },
     { type: "source_port", source_port_id: "vcc", source_component_id: "u1", pin_number: 1, name: "VCC" },
@@ -79,4 +81,20 @@ test("a ground via must reach the plane, and build errors cannot be ignored", ()
   expect(checkDecoupling(circuit, requirement).errors.join()).toContain("does not reach")
   const failedBuild = [...fixture(), { type: "pcb_autorouting_error", message: "Unrouted connection" }]
   expect(checkDecoupling(failedBuild, requirement).errors.join()).toContain("Unrouted connection")
+})
+
+test("assembly must remain on top, including components other than bypass capacitors", () => {
+  const circuit = fixture()
+  circuit.find((item) => item.type === "pcb_component" && item.source_component_id === "u1").layer = "bottom"
+  expect(checkDecoupling(circuit, requirement).errors.join()).toContain("U1: expected top-side assembly")
+})
+
+test("a short bypass cannot change copper layers", () => {
+  const circuit = fixture()
+  circuit.find((item) => item.type === "pcb_board").thickness = 0.5
+  circuit.find((item) => item.type === "pcb_trace" && item.source_trace_id === "power").route.splice(1, 0,
+    { route_type: "via", from_layer: "top", to_layer: "inner1", x: 0.5, y: 0 },
+    { route_type: "wire", layer: "inner1", x: 0.5, y: 0 },
+    { route_type: "via", from_layer: "inner1", to_layer: "top", x: 0.5, y: 0 })
+  expect(checkDecoupling(circuit, requirement).errors.join()).toContain("Bypass route must stay on top with no vias")
 })

@@ -23,6 +23,7 @@ Trellis Core combines the processor, managed flash, power supplies, clocks, USB-
 | Status | 5 V XL-2121 addressable RGB LED driven through a 3.3 V-to-5 V AHCT buffer |
 | Controls | Processor reset, boot selection, board identification, and flash clock control |
 | PCB | 50 mm × 50 mm, four layers with an inner GND plane, 1.6 mm thick, four 2.7 mm mounting holes |
+| Assembly | All components on the top side |
 | Routing | Four-layer autorouting with `5x` effort, 0.2 mm traces, and 0.2 mm minimum via holes |
 
 ## How it works
@@ -123,9 +124,9 @@ The board selects `autorouterVersion="beta_pipeline7"` to preserve its explicit 
 
 The Bun patch for `@tscircuit/core@0.0.1889` preserves explicit router endpoint IDs when importing inner-layer traces between through-vias. Without it, core can lose the source-net identity because the vias' logical ports are on top, causing the Gerber short checker to treat a GND segment as an unrelated net. The patch changes net attribution only; copper geometry and clearance checks remain intact. `bun install` applies it, and `scripts/via-net-identity.test.mjs` checks that ground and signal routes retain separate identities.
 
-The [decoupling map](scripts/decoupling-map.json) lists every local bypass capacitor, its exact IC power/reference pin, and its maximum routed length. Each `DECOUPLE_C*` trace has a dedicated physical path. Top-layer paths have a 3 mm ceiling; the six bottom-layer CPU bypasses have a 4 mm ceiling that includes the 1.6 mm through-via. Capacitor pin 1 faces the IC. Each pin 2 has a dedicated return of at most 1 mm to a nearby through-via tied to the inner GND plane. `decouplingFor` remains on each capacitor for inspection; an explicit trace supplies the physical route, so `decouplingTo` is intentionally omitted to avoid duplicate generated traces.
+The [decoupling map](scripts/decoupling-map.json) lists every local bypass capacitor, its exact IC power/reference pin, and its maximum routed length. Each `DECOUPLE_C*` trace has a dedicated physical path. All components are assembled on the top side. Every bypass path stays on top with no vias and a 3 mm ceiling; adjacent CPU power pins fan out to spaced capacitor rows around the package. Capacitor pin 1 faces the IC. Each pin 2 has a dedicated return of at most 1 mm to a nearby through-via tied to the inner GND plane. `decouplingFor` remains on each capacitor for inspection; an explicit trace supplies the physical route, so `decouplingTo` is intentionally omitted to avoid duplicate generated traces.
 
-`bun run check:decoupling` measures the built copper polyline, including both sides of vias and via depth. It fails for missing/wrong pin mappings, missing direct routes, ungrounded capacitors, changed limits, excessive length, or any build errors (the CLI can otherwise return success despite routing errors). It is part of `bun run verify`. These are board layout constraints, not a substitute for power-integrity measurements.
+`bun run check:decoupling` measures the built copper polyline, including both sides of vias and via depth. It fails for missing/wrong pin mappings, missing direct routes, ungrounded capacitors, changed limits, excessive length, bottom-side components, bypass layer changes, or any build errors (the CLI can otherwise return success despite routing errors). It is part of `bun run verify`. These are board layout constraints, not a substitute for power-integrity measurements.
 
 The remaining capacitors have different roles: C3/C5/C6 are regulator output reservoirs; C10/C22/C29 are rail bulk storage; C2/C4 are feedback feed-forward capacitors; C8 is the power-good filter; C32/C33/C36/C37 are crystal loads; C40 is the reset filter; C44 filters the flash-clock enable. They are not counted as local IC bypasses.
 

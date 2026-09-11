@@ -30,6 +30,7 @@ export function routeLength(route, thickness) {
 export function checkDecoupling(circuit, requirements = mapping) {
   const ofType = (type) => circuit.filter((element) => element.type === type)
   const components = ofType("source_component")
+  const pcbComponents = ofType("pcb_component")
   const ports = ofType("source_port")
   const pcbPorts = ofType("pcb_port")
   const traces = ofType("source_trace")
@@ -40,6 +41,10 @@ export function checkDecoupling(circuit, requirements = mapping) {
   // The CLI can return success while the generated circuit contains routing errors.
   const errors = circuit.filter((item) => item.type.endsWith("_error"))
     .map((item) => `${item.type}: ${item.message ?? "Build error"}`)
+  for (const component of components) {
+    const placement = pcbComponents.find((pcb) => pcb.source_component_id === component.source_component_id)
+    if (placement?.layer !== "top") errors.push(`${component.name}: expected top-side assembly`)
+  }
   if (!ofType("pcb_copper_pour").some((pour) => pour.layer === "inner1" && pour.source_net_id === ground?.source_net_id)) {
     errors.push("Missing inner1 GND plane")
   }
@@ -75,6 +80,9 @@ export function checkDecoupling(circuit, requirements = mapping) {
       })
       if (!directRoutes.length) throw new Error("Missing direct routed connection; a shared rail branch is insufficient")
       const lengths = directRoutes.map((pcb) => {
+        if (pcb.route.some((point) => point.route_type !== "wire" || point.layer !== "top")) {
+          throw new Error("Bypass route must stay on top with no vias")
+        }
         const first = pcb.route[0]
         const last = pcb.route.at(-1)
         for (const [point, id] of [[first, first.start_pcb_port_id], [last, last.end_pcb_port_id]]) {
