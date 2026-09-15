@@ -83,6 +83,11 @@ J3 uses 3.3 V logic. Use a 3.3 V USB-to-UART adapter, connect adapter RX to J3 T
 
 ## How to program the board
 
+Before applying power, follow [first-board power and firmware checks](docs/bring-up.md).
+J1 is a 5 V input with passive CC pull-downs; it has no USB-PD negotiation or
+source-current detection. Startup/steady current and USB source compatibility
+must be measured on the prototype.
+
 The board is programmed through its existing USB-C data connector using the T113-S3 BootROM's USB FEL mode. No separate programmer IC is fitted or required for this flow. SW2 disables the managed-flash clock so the installed image can be bypassed during recovery, and SW1 resets the processor. The boot behavior and peripheral pin functions are documented in the [T113-S3 user manual](https://turl.linux-sunxi.org/T113-S3/T113-S3_User_manual_v1.1_20210830.pdf) and [datasheet](https://dl.linux-sunxi.org/T113-S3/T113-S3_Datasheet_v1.6_20220303.pdf).
 
 ### Programming theory
@@ -116,7 +121,24 @@ See the [XFEL quick start](https://xfel.xboot.org/en/guide/getting-started/) for
 
 ## RGB control
 
-U7 is powered by protected 5 V VBUS. Its [manufacturer datasheet](https://datasheet.lcsc.com/datasheet/pdf/2df1f2a44ad21337c86deb2773c9b36b.pdf) specifies full operation at 4.5–5.5 V and a DIN high threshold of 0.65 × VDD. U8's [TTL-compatible input](https://www.ti.com/lit/ds/symlink/sn74ahct1g125.pdf) accepts the CPU's 3.3 V output and drives DIN at the LED supply voltage. C45 and C46 bypass the LED and buffer separately. Configure PE5 for LEDC-DO and use the LED's single-wire protocol; WLED firmware is not included.
+U7 is powered by protected 5 V VBUS. Its [manufacturer datasheet](https://www.lcsc.com/datasheet/C5349957.pdf) specifies full operation at 4.5–5.5 V and a DIN high threshold of 0.65 × VDD. U8's [TTL-compatible input](https://www.ti.com/lit/ds/symlink/sn74ahct1g125.pdf) accepts the CPU's 3.3 V output and drives DIN at the LED supply voltage. C45 and C46 bypass the LED and buffer separately. Configure PE5 for LEDC-DO and use the LED's single-wire protocol; WLED firmware is not included.
+
+## Fabrication and assembly
+
+Use [fabrication and assembly notes](docs/assembly.md) with the BOM and placement
+files. D1 has a printed cathode `K` and anode/cathode fabrication labels. U5 and
+U7 have 0.18 mm-stroke pin-1 circles and fabrication callouts. U5 retains its
+1.27 mm solder-land spacing; the notes document coverage of the Zetta package's
+1.25 mm-pitch terminals and the nominal 0.1575 mm minimum side margin.
+The board retains 0.20 mm via holes and 0.40 mm
+outer copper diameters; select the corresponding fabrication option.
+
+`bun run check:assembly` checks U5 terminal coverage, the presence of polarity
+notes, and the position, stroke and pad clearance of the pin-1 markers. It is
+part of `bun run verify`. After verification, `bun run export:assembly` creates
+`dist/index/assembly-top.svg`, showing pads, pin numbers, silk and fabrication
+notes without routed copper. Send that drawing and `docs/assembly.md` to the
+assembler and inspect the actual placement preview before manufacturing.
 
 ## Decoupling and review checks
 
@@ -161,6 +183,8 @@ bun run dev
 | `bun run typecheck` | Check the TypeScript source |
 | `bun run verify` | Run netlist, placement, build, actual decoupling length, and copper-short checks |
 | `bun run check:decoupling` | Check local bypass routes in the existing build |
+| `bun run check:assembly` | Check flash terminal coverage, polarity notes and orientation markers |
+| `bun run export:assembly` | Generate the top-side assembly drawing from the verified build |
 | `bun run build` | Generate circuit JSON under `dist/` |
 | `bun run build:preview` | Generate PCB, schematic, and 3D preview images |
 | `bun run build:handoff` | Generate KiCad, STEP, and GLB handoff files |
@@ -191,4 +215,7 @@ Build artifacts are written under `dist/`:
 
 Run `bun run verify` to reproduce the electrical, placement, routed decoupling, and copper-short checks. Checked schematic, PCB, and 3D views are stored in `__snapshots__/`.
 
-Hardware bring-up and a compatible recovery/flashing image remain unverified. Inspect the generated handoff files and run fabrication-specific DRC before manufacturing.
+Hardware bring-up and a compatible recovery/flashing image remain unverified.
+Use [the bring-up procedure and results record](docs/bring-up.md) to capture
+current/rail measurements, FEL, DDR, storage and boot evidence. Inspect the
+generated handoff files and run fabrication-specific DRC before manufacturing.

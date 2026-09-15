@@ -15,7 +15,7 @@
     "dev": "tsci dev index.circuit.tsx",
     "start": "tsci dev index.circuit.tsx",
     "typecheck": "tsc --noEmit",
-    "verify": "bun run typecheck && bun test scripts/*.test.mjs && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bun run build && bun run check:decoupling && bunx tsci check shorts dist/index/circuit.json",
+    "verify": "bun run typecheck && bun test scripts/*.test.mjs && bunx tsci check netlist && bunx tsci check schematic-placement && bunx tsci check placement && bunx tsci check routing-difficulty && bun run build && bun run check:decoupling && bun run check:assembly && bunx tsci check shorts dist/index/circuit.json",
     "check": "bun run verify",
     "build": "tsci build index.circuit.tsx --all-images --pcb-png --schematic-png --svgs --autorouter-timeout 600s --disable-parts-engine",
     "build:preview": "tsci build --pcb-png --schematic-png --3d-png index.circuit.tsx --autorouter-timeout 600s --disable-parts-engine",
@@ -24,7 +24,9 @@
     "snapshot:update": "tsci snapshot index.circuit.tsx --update --disable-parts-engine",
     "snapshot:3d": "tsci snapshot index.circuit.tsx --3d --camera-preset top-left-corner --disable-parts-engine",
     "snapshot:3d:update": "tsci snapshot index.circuit.tsx --update --3d --camera-preset top-left-corner --disable-parts-engine",
-    "check:decoupling": "bun scripts/check-decoupling.mjs"
+    "check:decoupling": "bun scripts/check-decoupling.mjs",
+    "check:assembly": "bun scripts/check-assembly.mjs",
+    "export:assembly": "bun scripts/export-assembly.mjs"
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
