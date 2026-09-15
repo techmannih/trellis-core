@@ -24,7 +24,7 @@ Trellis Core combines the processor, managed flash, power supplies, clocks, USB-
 | Controls | Processor reset, boot selection, board identification, and flash clock control |
 | PCB | 50 mm × 50 mm, four layers with an inner GND plane, 1.6 mm thick, four 2.7 mm mounting holes |
 | Assembly | All components on the top side |
-| Routing | Four-layer autorouting with `5x` effort, 0.2 mm traces, and 0.2 mm minimum via holes |
+| Routing | Four-layer autorouting with `5x` effort, 0.15 mm minimum / 0.2 mm nominal traces, and 0.2 mm via holes with 0.45 mm pads |
 
 ## How it works
 
@@ -130,7 +130,7 @@ files. D1 has a printed cathode `K` and anode/cathode fabrication labels. U5 and
 U7 have 0.18 mm-stroke pin-1 circles and fabrication callouts. U5 retains its
 1.27 mm solder-land spacing; the notes document coverage of the Zetta package's
 1.25 mm-pitch terminals and the nominal 0.1575 mm minimum side margin.
-The board retains 0.20 mm via holes and 0.40 mm
+The board retains 0.20 mm via holes and 0.45 mm
 outer copper diameters; select the corresponding fabrication option.
 
 `bun run check:assembly` checks U5 terminal coverage, the presence of polarity
@@ -143,6 +143,8 @@ assembler and inspect the actual placement preview before manufacturing.
 ## Decoupling and review checks
 
 The board selects `autorouterVersion="beta_pipeline7"` to preserve its explicit bypass, crystal, and LED signal paths as fixed copper. With the pinned tscircuit version, Pipeline 9 can move these paths and introduce vias despite `maxViaCount={0}`. Via-to-pad clearance is explicitly set to 0.1 mm so routing and final DRC use the same limit. The OSC1–C33 load-capacitor branch also has an explicit zero-via route.
+
+The 0.45 mm via pads are used throughout, including the manual ground vias. Routing uses a 0.15 mm minimum trace width; the C21 and LXIN escape corners are staggered to maintain clearance at that width.
 
 The Bun patch for `@tscircuit/core@0.0.1889` preserves explicit router endpoint IDs when importing inner-layer traces between through-vias. Without it, core can lose the source-net identity because the vias' logical ports are on top, causing the Gerber short checker to treat a GND segment as an unrelated net. The patch changes net attribution only; copper geometry and clearance checks remain intact. `bun install` applies it, and `scripts/via-net-identity.test.mjs` checks that ground and signal routes retain separate identities.
 
