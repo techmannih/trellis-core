@@ -35,10 +35,10 @@ export const TrellisCore = () => (
     solderMaskColor="#245f2b"
     minTraceWidth={0.15}
     defaultTraceWidth="0.2mm"
-    minViaHoleDiameter={0.2}
+    minViaHoleDiameter={0.3}
     minViaPadDiameter={0.45}
     minViaEdgeToPadEdgeClearance="0.1mm"
-    pcbStyle={{ viaPadDiameter: 0.45, viaHoleDiameter: 0.2 }}
+    pcbStyle={{ viaPadDiameter: 0.45, viaHoleDiameter: 0.3 }}
     autorouterEffortLevel="5x"
     // Preserve the hand-routed bypass and clock paths as fixed copper.
     // Pipeline 9 can move these vias or introduce layer changes into zero-via paths.
@@ -319,135 +319,135 @@ export const TrellisCore = () => (
 
     {/* Local bypass returns connect to the inner ground plane through these vias. */}
     <via name="GND_C1" pcbX={-13.700000} pcbY={-8.375000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C1" from=".C1 > .pin2" to=".GND_C1 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C7" pcbX={8.300000} pcbY={-8.375000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C7" from=".C7 > .pin2" to=".GND_C7 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C9" pcbX={5.910000} pcbY={12.900000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C9" from=".C9 > .pin2" to=".GND_C9 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C11" pcbX={-16.110000} pcbY={6.200000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C11" from=".C11 > .pin2" to=".GND_C11 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C12" pcbX={0.500000} pcbY={18.210000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C12" from=".C12 > .pin2" to=".GND_C12 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C13" pcbX={0.900000} pcbY={-3.410000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C13" from=".C13 > .pin2" to=".GND_C13 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C14" pcbX={-16.110000} pcbY={13.100000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C14" from=".C14 > .pin2" to=".GND_C14 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C15" pcbX={-16.110000} pcbY={8.800000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C15" from=".C15 > .pin2" to=".GND_C15 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C16" pcbX={5.910000} pcbY={11.800000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C16" from=".C16 > .pin2" to=".GND_C16 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C17" pcbX={5.910000} pcbY={10.700000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C17" from=".C17 > .pin2" to=".GND_C17 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C18" pcbX={5.910000} pcbY={8.800000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C18" from=".C18 > .pin2" to=".GND_C18 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C19" pcbX={-7.500000} pcbY={-3.410000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C19" from=".C19 > .pin2" to=".GND_C19 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C20" pcbX={-16.110000} pcbY={14.100000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C20" from=".C20 > .pin2" to=".GND_C20 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C21" pcbX={-6.650000} pcbY={18.710000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C21" from=".C21 > .pin2" to=".GND_C21 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C23" pcbX={-4.050000} pcbY={18.710000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C23" from=".C23 > .pin2" to=".GND_C23 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C24" pcbX={-7.600000} pcbY={18.710000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C24" from=".C24 > .pin2" to=".GND_C24 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C25" pcbX={-16.110000} pcbY={7.200000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C25" from=".C25 > .pin2" to=".GND_C25 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C26" pcbX={-4.300000} pcbY={-3.410000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C26" from=".C26 > .pin2" to=".GND_C26 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C27" pcbX={-3.200000} pcbY={-3.410000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C27" from=".C27 > .pin2" to=".GND_C27 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C28" pcbX={5.910000} pcbY={14.100000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C28" from=".C28 > .pin2" to=".GND_C28 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C30" pcbX={-5.700000} pcbY={18.710000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C30" from=".C30 > .pin2" to=".GND_C30 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C31" pcbX={-4.750000} pcbY={18.710000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C31" from=".C31 > .pin2" to=".GND_C31 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C34" pcbX={-11.700000} pcbY={-3.510000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C34" from=".C34 > .pin2" to=".GND_C34 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C35" pcbX={-16.110000} pcbY={4.600000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C35" from=".C35 > .pin2" to=".GND_C35 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C38" pcbX={-16.110000} pcbY={3.600000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C38" from=".C38 > .pin2" to=".GND_C38 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C39" pcbX={-16.110000} pcbY={2.600000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C39" from=".C39 > .pin2" to=".GND_C39 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C41" pcbX={12.950000} pcbY={13.325000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C41" from=".C41 > .pin2" to=".GND_C41 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C42" pcbX={15.395000} pcbY={14.410000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C42" from=".C42 > .pin2" to=".GND_C42 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C43" pcbX={9.090000} pcbY={16.900000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C43" from=".C43 > .pin2" to=".GND_C43 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C45" pcbX={12.010000} pcbY={2.500000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C45" from=".C45 > .pin2" to=".GND_C45 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C46" pcbX={4.650000} pcbY={2.510000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C46" from=".C46 > .pin2" to=".GND_C46 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C36" pcbX={8.710000} pcbY={14.700000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C36" from=".C36 > .pin2" to=".GND_C36 > .top"
       maxLength="1mm" pcbStraightLine />
     <via name="GND_C37" pcbX={9.690000} pcbY={14.700000}
-      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.2mm" connectsTo="net.GND" />
+      fromLayer="top" toLayer="bottom" outerDiameter="0.45mm" holeDiameter="0.3mm" connectsTo="net.GND" />
     <trace name="RETURN_C37" from=".C37 > .pin2" to=".GND_C37 > .top"
       maxLength="1mm" pcbStraightLine />
     <copperpour name="GND_PLANE" layer="inner1" connectsTo="net.GND" clearance="0.2mm" boardEdgeMargin="0.3mm" />

@@ -77,14 +77,14 @@ populated capacitors are ceramic/MLCC parts and do not require +/- polarity.
 | Size | 50 x 50 mm |
 | Copper layers | 4; inner1 is GND |
 | Nominal thickness | 1.6 mm |
-| Via hole / outer copper diameter | 0.20 / 0.45 mm |
-| Via radial annular ring | 0.125 mm |
+| Via hole / outer copper diameter | 0.30 / 0.45 mm |
+| Via radial annular ring | 0.075 mm |
 | Trace width | 0.15 mm minimum; 0.20 mm nominal |
 | Mounting holes | Four 2.7 mm NPTH holes |
 
-Select the **0.20 mm minimum via-hole option**. Do not allow the drill size to be
+Select the **0.30 mm minimum via-hole option**. Do not allow the drill size to be
 enlarged automatically without checking the copper ring and all clearances.
-Confirm support and pricing for 0.20/0.45 mm vias in the fabrication quote.
+Confirm support and pricing for 0.30/0.45 mm vias in the fabrication quote.
 If changing outer diameters for cost, rerun routing
 and clearance checks. The chosen copper weight, stackup, mask treatment and
 surface finish must be reflected in the actual manufacturing order.

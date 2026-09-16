@@ -24,7 +24,7 @@ Trellis Core combines the processor, managed flash, power supplies, clocks, USB-
 | Controls | Processor reset, boot selection, board identification, and flash clock control |
 | PCB | 50 mm × 50 mm, four layers with an inner GND plane, 1.6 mm thick, four 2.7 mm mounting holes |
 | Assembly | All components on the top side |
-| Routing | Four-layer autorouting with `5x` effort, 0.15 mm minimum / 0.2 mm nominal traces, and 0.2 mm via holes with 0.45 mm pads |
+| Routing | Four-layer autorouting with `5x` effort, 0.15 mm minimum / 0.2 mm nominal traces, and 0.3 mm via holes with 0.45 mm pads |
 
 ## How it works
 
@@ -130,7 +130,7 @@ files. D1 has a printed cathode `K` and anode/cathode fabrication labels. U5 and
 U7 have 0.18 mm-stroke pin-1 circles and fabrication callouts. U5 retains its
 1.27 mm solder-land spacing; the notes document coverage of the Zetta package's
 1.25 mm-pitch terminals and the nominal 0.1575 mm minimum side margin.
-The board retains 0.20 mm via holes and 0.45 mm
+The board uses 0.30 mm via holes and 0.45 mm
 outer copper diameters; select the corresponding fabrication option.
 
 `bun run check:assembly` checks U5 terminal coverage, the presence of polarity
