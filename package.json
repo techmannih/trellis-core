@@ -30,10 +30,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.18",
-    "tscircuit": "0.0.2503",
+    "tscircuit": "0.0.2567",
     "typescript": "^5.9.2"
-  },
-  "patchedDependencies": {
-    "@tscircuit/core@0.0.1889": "patches/@tscircuit%2Fcore@0.0.1889.patch"
   }
 }
