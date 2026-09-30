@@ -1964,7 +1964,6 @@ export const TrellisCore = () => (
     />
     <SN74AHCT1G125DCKR
       name="U8"
-      displayName="LED 3V3 TO 5V"
       pcbX={5.3} pcbY={-2} pcbRotation={0}
       schX={-3} schY={-8} schHeight="0.6mm"
       schSheetName="cpu-io" schSectionName="cpu-status"
@@ -2019,7 +2018,6 @@ export const TrellisCore = () => (
     <trace name="R26_U7" from=".R26 > .pin2" to=".U7 > .pin1" pcbPath={[]} maxViaCount={0} />
     <XL_2121RGBC_2812B
       name="U7"
-      displayName="ADDRESSABLE RGB"
       schX={8.5}
       schY={-8.68}
       schSheetName="cpu-io"
