@@ -26,8 +26,8 @@ export function checkAssembly(circuit) {
     if (name === "D1") {
       const label = own("pcb_silkscreen_text").find((item) => item.text === "K")
       if (!label || label.font_size < 1 || !pad(1) || !pad(2) ||
-          distance(label.anchor_position, pad(2)) >= distance(label.anchor_position, pad(1))) {
-        errors.push("D1: cathode label must be at least 1 mm high and nearest pin 2")
+          distance(label.anchor_position, pad(1)) >= distance(label.anchor_position, pad(2))) {
+        errors.push("D1: cathode label must be at least 1 mm high and nearest pin 1")
       }
       continue
     }

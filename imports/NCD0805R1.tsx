@@ -1,8 +1,8 @@
 import type { LedProps } from "@tscircuit/props"
 
 const pinLabels = {
-  pin1: ["anode", "pos"],
-  pin2: ["cathode", "neg"]
+  pin1: ["cathode", "neg"],
+  pin2: ["anode", "pos"]
 } as const
 
 export const NCD0805R1 = (props: LedProps) => {
@@ -19,8 +19,8 @@ export const NCD0805R1 = (props: LedProps) => {
 }}
       manufacturerPartNumber="NCD0805R1"
       footprint={<footprint>
-        <smtpad portHints={["pin1", "anode", "pos"]} pcbX="1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
-        <smtpad portHints={["pin2", "cathode", "neg"]} pcbX="-1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
+        <smtpad portHints={["pin2", "anode", "pos"]} pcbX="1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
+        <smtpad portHints={["pin1", "cathode", "neg"]} pcbX="-1.100074mm" pcbY="0mm" width="0.999998mm" height="1.2500102mm" shape="rect" />
 <silkscreenpath strokeWidth="0.18mm" route={[{"x":0.4999735999999757,"y":0.9499091999999791},{"x":1.980056999999988,"y":0.9598913999999468}]} />
 <silkscreenpath strokeWidth="0.18mm" route={[{"x":0.6400545999999849,"y":-0.9401047999999719},{"x":1.980056999999988,"y":-0.9401047999999719}]} />
 <silkscreenpath strokeWidth="0.18mm" route={[{"x":1.980056999999988,"y":0.9598913999999468},{"x":1.980056999999988,"y":-0.9401302000001124}]} />
@@ -31,7 +31,7 @@ export const NCD0805R1 = (props: LedProps) => {
 <silkscreenpath strokeWidth="0.18mm" route={[{"x":-2.099995799999988,"y":0.5999226000000135},{"x":-2.099995799999988,"y":-0.6001258000001144}]} />
 <silkscreenpath strokeWidth="0.18mm" route={[{"x":0.30005019999998694,"y":0.49989740000000893},{"x":0.30005019999998694,"y":-0.5001006000001098}]} />
 <silkscreenpath strokeWidth="0.18mm" route={[{"x":0.30005019999998694,"y":-0.005156199999987621},{"x":-0.19994880000001558,"y":-0.005156199999987621}]} />
-{/* K is the cathode, pin 2; the opposite pad is the anode, pin 1. */}
+{/* Supplier C84256 numbers the cathode as pin 1 and the anode as pin 2. */}
 <silkscreentext text="K" pcbX="-3mm" pcbY="0mm" fontSize="1mm" />
 <fabricationnotetext text="A (+)" pcbX="1.1mm" pcbY="-1.5mm" fontSize="0.5mm" />
 <fabricationnotetext text="K (-)" pcbX="-1.1mm" pcbY="-1.5mm" fontSize="0.5mm" />

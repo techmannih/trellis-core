@@ -538,8 +538,8 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="power-3v3"
       connections={{
-        pin1: "net.P3V3",
-        pin2: "net.POWER_LED_K",
+        anode: "net.P3V3",
+        cathode: "net.POWER_LED_K",
       }}
     />
     <capacitor

@@ -19,7 +19,7 @@ insufficient because library zero-angle conventions can differ.
 
 | Reference | Part | Orientation on this board |
 | --- | --- | --- |
-| D1 | NCD0805R1 | Pin 1/anode is the upper pad, connected to P3V3. Pin 2/cathode is the lower pad, connected through R4 to GND. The printed `K` identifies the cathode end; assembly labels are `A (+)` and `K (-)`. |
+| D1 | NCD0805R1 | Pin 2/anode is the upper pad, connected to P3V3. Pin 1/cathode is the lower pad, connected through R4 to GND. The printed `K` identifies the cathode end; assembly labels are `A (+)` and `K (-)`. |
 | U5 | ZDSD04GLGEAG | Pin 1/DAT2 is the leftmost pad in the lower row. Align the package pin-1 corner with the PCB circle and `1 DAT2` callout. U5 is placed at 90 degrees in the source layout. |
 | U7 | XL-2121RGBC-2812B | The package's marked/chamfered corner is pin 1/DIN, at the lower-right corner on this board. Align it with the PCB circle and `1 DIN` callout. |
 
