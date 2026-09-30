@@ -47,11 +47,48 @@ export const TrellisCore = () => (
     schTraceAutoLabelEnabled
     schMaxTraceDistance="0.8mm"
   >
-    <schematicsheet name="power" displayName="Power" sheetIndex={1} />
-    <schematicsheet name="cpu-core" displayName="CPU Core" sheetIndex={2} />
-    <schematicsheet name="cpu-io" displayName="Expansion, Boot and Status" sheetIndex={3} />
-    <schematicsheet name="storage" displayName="Storage" sheetIndex={4} />
-    <schematicsheet name="usb" displayName="USB-C" sheetIndex={5} />
+    <schematicsheet name="power" displayName="Power" sheetIndex={1}>
+      <schematictext
+        schX={-8.5} schY={1.2} fontSize={0.3} anchor="top_left"
+        text={"U1: 5 V VBUS to 3.3 V buck supply\n2 A regulator IC; powers I/O and flash\nPower-good enables U2's 0.9 V rail"}
+      />
+      <schematictext
+        schX={-9} schY={-6.2} fontSize={0.3} anchor="top_left"
+        text={"U2: 5 V VBUS to 0.9 V CPU core supply\n2 A regulator IC; starts after U1 power-good"}
+      />
+    </schematicsheet>
+    <schematicsheet name="cpu-core" displayName="CPU Core" sheetIndex={2}>
+      <schematictext
+        schX={-11.5} schY={-4.8} fontSize={0.3} anchor="top_left"
+        text={"U3: T113-S3 Linux processor\n0.9 V core; 3.3 V I/O\n1.8 V and 1.5 V support rails\n24 MHz main / 32.768 kHz RTC clocks"}
+      />
+    </schematicsheet>
+    <schematicsheet name="cpu-io" displayName="Expansion, Boot and Status" sheetIndex={3}>
+      <schematictext
+        schX={-7} schY={-10.5} fontSize={0.3} anchor="top_left"
+        text={"U8: 3.3 V to 5 V LED data buffer\n5 V supply; output always enabled\nR27 pulls the undriven input low"}
+      />
+      <schematictext
+        schX={5} schY={-10.5} fontSize={0.3} anchor="top_left"
+        text={"U7: Addressable RGB status LED\n5 V VBUS supply; data from U8 via R26\nSingle LED; DOUT is unused"}
+      />
+    </schematicsheet>
+    <schematicsheet name="storage" displayName="Storage" sheetIndex={4}>
+      <schematictext
+        schX={3.5} schY={-1.8} fontSize={0.3} anchor="top_left"
+        text={"U5: 4-Gbit SD NAND boot storage\n3.3 V supply; 4-bit SDC0 data bus\nR17-R21 pull up CMD and DAT0-DAT3"}
+      />
+      <schematictext
+        schX={-11.5} schY={-0.5} fontSize={0.3} anchor="top_left"
+        text={"U6: 3.3 V AND gate for the flash clock\nSW2 pulls enable low to block SD boot\nR23 is the 22-ohm clock series resistor"}
+      />
+    </schematicsheet>
+    <schematicsheet name="usb" displayName="USB-C" sheetIndex={5}>
+      <schematictext
+        schX={-2.5} schY={-2} fontSize={0.3} anchor="top_left"
+        text={"U4: ESD protection for USB 2.0 D+ / D-\nData connects J1 to the CPU's USB0 port\nVBUS reference: 5 V USB_VBUS_RAW"}
+      />
+    </schematicsheet>
 
     <net name="VBUS" isPowerNet />
     <net name="P3V3" isPowerNet />
