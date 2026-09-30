@@ -545,7 +545,7 @@ export const TrellisCore = () => (
     <capacitor
         name="C7"
         schX={-12}
-        schY={-4}
+        schY={-1.5}
         schSheetName="power"
       capacitance="10uF"
       footprint="cap0603"
@@ -683,7 +683,7 @@ export const TrellisCore = () => (
     <capacitor
         name="C1"
         schX={-12}
-        schY={4}
+        schY={1.5}
         schSheetName="power"
       capacitance="10uF"
       footprint="cap0603"
@@ -710,7 +710,7 @@ export const TrellisCore = () => (
       pcbX={-8.000007}
       pcbY={-11.1}
       pcbRotation={180}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="power-3v3"
       connections={{
         pin1: "net.VBUS",
@@ -729,7 +729,7 @@ export const TrellisCore = () => (
       pcbX={13.999993}
       pcbY={-15.3}
       pcbRotation={180}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="power-0v9"
       connections={{
         pin1: "net.P0V9",
@@ -748,7 +748,7 @@ export const TrellisCore = () => (
       pcbX={-8.000007}
       pcbY={-13.9}
       pcbRotation={180}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="power-3v3"
       connections={{
         pin1: "net.P3V3",
@@ -787,7 +787,7 @@ export const TrellisCore = () => (
       pcbX={13.999993}
       pcbY={-12.5}
       pcbRotation={180}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="power-3v3"
       connections={{
         pin1: "net.VBUS",
@@ -806,7 +806,7 @@ export const TrellisCore = () => (
       pcbX={-8.000007}
       pcbY={-15.3}
       pcbRotation={0}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="power-3v3"
       connections={{
         pin1: "net.BUCK_3V3_FB",
@@ -825,7 +825,7 @@ export const TrellisCore = () => (
       pcbX={13.999993}
       pcbY={-16.7}
       pcbRotation={0}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="power-0v9"
       connections={{
         pin1: "net.BUCK_0V9_FB",
@@ -979,7 +979,7 @@ export const TrellisCore = () => (
       ]}
     />
     <CM4024M00008001
-        name="OSC1"
+        name="Y1"
         schX={-9}
         schY={3}
         schSheetName="cpu-core"
@@ -990,9 +990,9 @@ export const TrellisCore = () => (
       schSectionName="cpu-clocks"
     />
     <Q13FC13500004
-        name="OSC2"
+        name="Y2"
         schX={-9}
-        schY={0}
+        schY={-1.7}
         schSheetName="cpu-core"
       pcbX={9.199993}
       pcbY={12}
@@ -1000,14 +1000,14 @@ export const TrellisCore = () => (
       schRotation={0}
       schSectionName="cpu-clocks"
     />
-    <trace name="XTAL24_GND1" from=".OSC1 > .GND1" to="net.GND" schDisplayLabel="GND" />
-    <trace name="XTAL24_GND2" from=".OSC1 > .GND2" to="net.GND" schDisplayLabel="GND" />
-    <trace name="OSC1_C33" from=".OSC1 > .pin1" to=".C33 > .pin1"
+    <trace name="XTAL24_GND1" from=".Y1 > .pin2" to="net.GND" schDisplayLabel="GND" />
+    <trace name="XTAL24_GND2" from=".Y1 > .pin4" to="net.GND" schDisplayLabel="GND" />
+    <trace name="Y1_C33" from=".Y1 > .pin1" to=".C33 > .pin1"
       pcbStraightLine maxViaCount={0} />
     <trace
       name="U3_DXOUT"
       from=".U3 > .pin22"
-      to=".OSC1 > .pin1"
+      to=".Y1 > .pin1"
       schDisplayLabel="DXOUT"
       connectsTo="net.DXOUT"
       pcbPath={[
@@ -1022,7 +1022,7 @@ export const TrellisCore = () => (
     <trace
       name="U3_DXIN"
       from=".U3 > .pin23"
-      to=".OSC1 > .pin3"
+      to=".Y1 > .pin3"
       schDisplayLabel="DXIN"
       connectsTo="net.DXIN"
       pcbPath={[
@@ -1035,14 +1035,14 @@ export const TrellisCore = () => (
     <trace
       name="U3_LXOUT"
       from=".U3 > .pin24"
-      to=".OSC2 > .pin1"
+      to=".Y2 > .pin1"
       schDisplayLabel="LXOUT"
       connectsTo="net.LXOUT"
       pcbPath={[
         { x: 3.0, y: -8.5 },
         { x: 2.5, y: -9.1 },
         { x: 2.5, y: -12.1 },
-        { x: 3.2, y: -12.3 },
+        { x: 3.2, y: -12.8 },
         { x: 3.2, y: -15.75 },
       ]}
       maxViaCount={0}
@@ -1050,7 +1050,7 @@ export const TrellisCore = () => (
     <trace
       name="U3_LXIN"
       from=".U3 > .pin25"
-      to=".OSC2 > .pin2"
+      to=".Y2 > .pin2"
       schDisplayLabel="LXIN"
       connectsTo="net.LXIN"
       pcbPath={[
@@ -1063,16 +1063,16 @@ export const TrellisCore = () => (
       maxViaCount={0}
     />
     <trace
-      name="OSC2_C37"
-      from=".OSC2 > .pin1"
+      name="Y2_C37"
+      from=".Y2 > .pin1"
       to=".C37 > .pin1"
       schDisplayLabel="LXOUT"
       pcbPath={[]}
       maxViaCount={0}
     />
     <trace
-      name="OSC2_C36"
-      from=".OSC2 > .pin2"
+      name="Y2_C36"
+      from=".Y2 > .pin2"
       to=".C36 > .pin1"
       schDisplayLabel="LXIN"
       pcbPath={[]}
@@ -1087,7 +1087,7 @@ export const TrellisCore = () => (
       pcbX={8.999993}
       pcbY={20.8}
       pcbRotation={90}
-      schRotation={0}
+      schRotation={90}
       schSectionName="cpu-reset"
       connections={{
         pin1: "net.GND",
@@ -1116,7 +1116,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C28"
-        schX={5}
+        schX={6}
         schY={-8}
         schSheetName="cpu-core"
       capacitance="2.2uF"
@@ -1134,7 +1134,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C10"
-        schX={-10}
+        schX={-8.5}
         schY={8}
         schSheetName="cpu-core"
       capacitance="10uF"
@@ -1154,8 +1154,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C20"
-        schX={10}
-        schY={8}
+        schX={8.5}
+        schY={6.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1192,7 +1192,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C23"
-        schX={-10}
+        schX={-8.5}
         schY={-8}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1210,8 +1210,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C27"
-        schX={-2}
-        schY={-8}
+        schX={-7}
+        schY={-9.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1229,8 +1229,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C14"
-        schX={-2}
-        schY={8}
+        schX={-7}
+        schY={6.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1248,7 +1248,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C34"
-        schX={5}
+        schX={7}
         schY={5}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1286,7 +1286,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C17"
-        schX={4}
+        schX={8.5}
         schY={8}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1304,8 +1304,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C31"
-        schX={11}
-        schY={-8}
+        schX={7.5}
+        schY={-9.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1322,8 +1322,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C30"
-        schX={9}
-        schY={-8}
+        schX={6}
+        schY={-9.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1341,8 +1341,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C25"
-        schX={-6}
-        schY={-8}
+        schX={-10}
+        schY={-9.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1359,7 +1359,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C11"
-        schX={-8}
+        schX={-7}
         schY={8}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1378,7 +1378,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C24"
-        schX={-8}
+        schX={-7}
         schY={-8}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1417,7 +1417,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C22"
-        schX={-12}
+        schX={-10}
         schY={-8}
         schSheetName="cpu-core"
       capacitance="10uF"
@@ -1437,8 +1437,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C15"
-        schX={0}
-        schY={8}
+        schX={-10}
+        schY={5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1455,8 +1455,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C19"
-        schX={8}
-        schY={8}
+        schX={7}
+        schY={6.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1492,7 +1492,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C35"
-        schX={7}
+        schX={8.5}
         schY={5}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1528,7 +1528,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C9"
-        schX={-12}
+        schX={-10}
         schY={8}
         schSheetName="cpu-core"
       capacitance="2.2uF"
@@ -1546,8 +1546,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C13"
-        schX={-4}
-        schY={8}
+        schX={-8.5}
+        schY={6.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1564,7 +1564,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C29"
-        schX={7}
+        schX={7.5}
         schY={-8}
         schSheetName="cpu-core"
       capacitance="10uF"
@@ -1584,7 +1584,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C16"
-        schX={2}
+        schX={7}
         schY={8}
         schSheetName="cpu-core"
       capacitance="2.2uF"
@@ -1602,7 +1602,7 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C18"
-        schX={6}
+        schX={10}
         schY={8}
         schSheetName="cpu-core"
       capacitance="100nF"
@@ -1640,8 +1640,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C21"
-        schX={12}
-        schY={8}
+        schX={10}
+        schY={6.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1658,8 +1658,8 @@ export const TrellisCore = () => (
     />
     <capacitor
         name="C26"
-        schX={-4}
-        schY={-8}
+        schX={-8.5}
+        schY={-9.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1676,8 +1676,8 @@ export const TrellisCore = () => (
     />
     <capacitor
       name="C12"
-        schX={-6}
-        schY={8}
+        schX={-10}
+        schY={6.5}
         schSheetName="cpu-core"
       capacitance="100nF"
       footprint="cap0402"
@@ -1704,7 +1704,7 @@ export const TrellisCore = () => (
       pcbX={6.249993000000001}
       pcbY={19.900000000000002}
       pcbRotation={90}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-reset"
       connections={{
         pin1: "net.P3V3",
@@ -1723,7 +1723,7 @@ export const TrellisCore = () => (
       pcbX={-2.3}
       pcbY={19.9}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-analog"
       connections={{
         pin1: "net.DDR_DZQ",
@@ -1742,7 +1742,7 @@ export const TrellisCore = () => (
       pcbX={-8.800006999999999}
       pcbY={-4}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-analog"
       connections={{
         pin1: "net.BOARD_ID_ADC",
@@ -1761,7 +1761,7 @@ export const TrellisCore = () => (
       pcbX={-10.700007000000001}
       pcbY={-4}
       pcbRotation={90}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-analog"
       connections={{
         pin1: "net.P3V3",
@@ -1780,7 +1780,7 @@ export const TrellisCore = () => (
       pcbX={21.509993}
       pcbY={-10}
       pcbRotation={0}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-board-id"
       connections={{
         pin1: "net.BOARD_ID_3",
@@ -1799,7 +1799,7 @@ export const TrellisCore = () => (
       pcbX={21.499993}
       pcbY={-6.7}
       pcbRotation={180}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-boot"
       connections={{
         pin1: "net.P3V3",
@@ -1818,7 +1818,7 @@ export const TrellisCore = () => (
       pcbX={21.499993}
       pcbY={-7.799999999999999}
       pcbRotation={180}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-boot"
       connections={{
         pin1: "net.P3V3",
@@ -1837,7 +1837,7 @@ export const TrellisCore = () => (
       pcbX={21.509993}
       pcbY={-11.5}
       pcbRotation={0}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-board-id"
       connections={{
         pin1: "net.BOARD_ID_2",
@@ -1856,7 +1856,7 @@ export const TrellisCore = () => (
       pcbX={21.509993}
       pcbY={-8.9}
       pcbRotation={0}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="cpu-board-id"
       connections={{
         pin1: "net.BOARD_ID_1",
@@ -1874,7 +1874,8 @@ export const TrellisCore = () => (
       pcbY={-9}
       pcbRotation={270}
       schRotation={0}
-      schHeight={1.0}
+      schHeight={1}
+      schPinStyle={{ pin1: { marginBottom: 0.4 } }}
       pinLabels={{
         pin1: ["3V3"],
         pin2: ["GND"],
@@ -1952,7 +1953,7 @@ export const TrellisCore = () => (
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
       pcbX={4.65} pcbY={1.3} pcbRotation={90}
-      schX={-3} schY={-5.5} schOrientation="vertical"
+      schX={-1} schY={-5.5} schOrientation="vertical"
       schSheetName="cpu-io" schSectionName="cpu-status"
       decouplingFor=".U8 > .VCC" maxDecouplingTraceLength="3mm"
     />
@@ -2004,8 +2005,8 @@ export const TrellisCore = () => (
       schOrientation="vertical"
       manufacturerPartNumber="CL05B104KB54PNC"
       supplierPartNumbers={{ jlcpcb: ["C307331"] }}
-      schX={12}
-      schY={-8}
+      schX={1}
+      schY={-5.5}
       schSheetName="cpu-io"
       schSectionName="cpu-status"
       pcbX={10.8}
@@ -2064,7 +2065,7 @@ export const TrellisCore = () => (
       pcbX={14.699993}
       pcbY={20.8}
       pcbRotation={90}
-      schRotation={0}
+      schRotation={90}
       schSectionName="storage-reset"
       connections={{
         pin1: "net.GND",
@@ -2176,7 +2177,7 @@ export const TrellisCore = () => (
       pcbX={18.499993}
       pcbY={0.8875}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
@@ -2195,7 +2196,7 @@ export const TrellisCore = () => (
       pcbX={16.599992999999998}
       pcbY={0.8875}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
@@ -2214,7 +2215,7 @@ export const TrellisCore = () => (
       pcbX={18.999993}
       pcbY={13.2875}
       pcbRotation={90}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
@@ -2233,7 +2234,7 @@ export const TrellisCore = () => (
       pcbX={11.949993000000001}
       pcbY={19.6}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={90}
       schSectionName="storage-reset"
       connections={{
         pin1: "net.SD_FLASH_CLK_GATE_EN",
@@ -2252,7 +2253,7 @@ export const TrellisCore = () => (
       pcbX={14.699993000000001}
       pcbY={0.8875}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
@@ -2271,7 +2272,7 @@ export const TrellisCore = () => (
       pcbX={20.899993}
       pcbY={13.2875}
       pcbRotation={90}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="storage-flash"
       connections={{
         pin1: "net.P3V3",
@@ -2283,7 +2284,7 @@ export const TrellisCore = () => (
         schX={-9}
         schY={0}
         schWidth="3.2mm"
-        schHeight="2.15mm"
+        schHeight="1.95mm"
         schPinArrangement={{
           leftSide: [
             "SHELL1",
@@ -2357,7 +2358,7 @@ export const TrellisCore = () => (
       pcbX={-3.4500069999999994}
       pcbY={-13.2}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="usb-protection"
       connections={{
         pin1: "net.USB_VBUS_RAW",
@@ -2377,7 +2378,7 @@ export const TrellisCore = () => (
       pcbX={3.099993}
       pcbY={-12.1}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="usb-port"
       connections={{
         pin1: "net.USB0_CC1",
@@ -2396,7 +2397,7 @@ export const TrellisCore = () => (
       pcbX={4.999993}
       pcbY={-12.1}
       pcbRotation={270}
-      schRotation={0}
+      schRotation={-90}
       schSectionName="usb-port"
       connections={{
         pin1: "net.USB0_CC2",

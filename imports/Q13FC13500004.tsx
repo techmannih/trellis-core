@@ -1,90 +1,11 @@
-import type { ChipProps } from "@tscircuit/props"
+import type { CrystalProps } from "@tscircuit/props"
 
-const pinLabels = {
-  pin1: ["pin1"],
-  pin2: ["pin2"]
-} as const
-
-export const Q13FC13500004 = (props: ChipProps<typeof pinLabels>) => {
+export const Q13FC13500004 = (props: Omit<CrystalProps, "frequency" | "loadCapacitance" | "pinVariant">) => {
   return (
-    <chip
-      pinLabels={pinLabels}
-      symbol={
-        <symbol>
-          <port
-            name="pin1"
-            pinNumber={1}
-            aliases={["1"]}
-            direction="left"
-            schX={-0.8}
-            schY={0}
-            schStemLength={0.3}
-          />
-          <port
-            name="pin2"
-            pinNumber={2}
-            aliases={["2"]}
-            direction="right"
-            schX={0.8}
-            schY={0}
-            schStemLength={0.3}
-          />
-          <schematicpath
-            points={[
-              { x: -0.22, y: -0.32 },
-              { x: -0.22, y: 0.32 },
-            ]}
-            strokeWidth={0.02}
-            strokeColor="#8D2323"
-          />
-          <schematicrect
-            schX={0}
-            schY={0}
-            width={0.2}
-            height={0.56}
-            strokeWidth={0.02}
-            color="#880000"
-          />
-          <schematicpath
-            points={[
-              { x: 0.22, y: -0.32 },
-              { x: 0.22, y: 0.32 },
-            ]}
-            strokeWidth={0.02}
-            strokeColor="#8D2323"
-          />
-          <schematicpath
-            points={[
-              { x: -0.5, y: 0 },
-              { x: -0.22, y: 0 },
-            ]}
-            strokeWidth={0.02}
-            strokeColor="#8D2323"
-          />
-          <schematicpath
-            points={[
-              { x: 0.22, y: 0 },
-              { x: 0.5, y: 0 },
-            ]}
-            strokeWidth={0.02}
-            strokeColor="#8D2323"
-          />
-          <schematictext
-            text="{REF}"
-            schX={0}
-            schY={0.5}
-            fontSize={0.2}
-            anchor="center"
-          />
-          <schematictext
-            text="32.768kHz"
-            schX={0}
-            schY={-0.5}
-            fontSize={0.2}
-            anchor="center"
-          />
-        </symbol>
-      }
+    <crystal
+      frequency="32.768kHz"
+      loadCapacitance="12.5pF"
+      pinVariant="two_pin"
       supplierPartNumbers={{
         "jlcpcb": [
           "C32346"

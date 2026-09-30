@@ -9,10 +9,22 @@ const pinLabels = {
   pin6: ["IO12"]
 } as const
 
+// ST USBLC6-2 datasheet: passive I/O paths, pin 2 GND, pin 5 VBUS.
+// https://www.st.com/resource/en/datasheet/usblc6-2.pdf
+const pinAttributes = {
+  pin1: { isPassive: true },
+  pin2: { requiresGround: true },
+  pin3: { isPassive: true },
+  pin4: { isPassive: true },
+  pin5: { requiresPower: true },
+  pin6: { isPassive: true },
+} as const
+
 export const USBLC6_2SC6 = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      pinAttributes={pinAttributes}
       supplierPartNumbers={{
   "jlcpcb": [
     "C2827654"
